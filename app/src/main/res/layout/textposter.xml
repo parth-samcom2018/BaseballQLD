@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sportsclub.baseballqld.views.TextPoster
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/textposter_height"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:layout_margin="5dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true">
+        <EditText
+            android:minLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:fontFamily="@font/lato_italic"
+            android:hint="Create Post"
+            android:background="@android:color/transparent"
+            />
+    </ScrollView>
+    <ImageView
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/create_post"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/comment_shape"
+        android:elevation="5dp"><requestFocus/></ImageView>
+
+</com.sportsclub.baseballqld.views.TextPoster>

@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Baseball QLD</string>
+
+    <string name="company_title">Copyright (c) 2018 HQNetwork. All rights reserved.</string>
+
+
+    <!-- Strings related to login -->
+    <string name="tv_title">Profile</string>
+    <string name="title_edit">Edit</string>
+    <string name="title_save">Save</string>
+    <string name="notice_title">Noticeboard</string>
+    <string name="group_title">Groups</string>
+    <string name="events_title">Events</string>
+    <string name="profile_title">Profile</string>
+    <string name="details_title">Name</string>
+    <string name="save_details">Save Event</string>
+    <string name="add_user">USER +</string>
+    <string name="notification_title">Notification</string>
+    <string name="prompt_email">Email:</string>
+    <string name="prompt_pw">PASSWORD:</string>
+    <string name="prompt_password">Password:</string>
+    <string name="prompt_old_password">Old Password:</string>
+    <string name="prompt_new_password">New Password:</string>
+    <string name="prompt_cm_pw">Confirm Password:</string>
+    <string name="tv_message">Welcome Baseball NSW!\nAs you are not yet connected to any groups, we need to get you started with your first group.</string>
+    <string name="rotate">Rotate for Full Ladder </string>
+    <string name="team">TEAM </string>
+    <string name="score">PCT </string>
+
+    <string name="alert_msg">Authorisation is denied..!!</string>
+
+    <string name="f_name">First Name:</string>
+    <string name="l_name">Last Name:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="rMale">Male</string>
+    <string name="rFemale">Female</string>
+
+    <string name="bday">Birth Year:</string>
+    <string name="country">Country:</string>
+    <string name="postcode">PostCode:</string>
+    <string name="accept">Accept</string>
+    <string name="terms"><u>Terms of Use</u></string>
+    <string name="btn_register">REGISTER</string>
+    <string name="already_account"><u>Already Have an Account? Login</u></string>
+
+    <string name="action_sign_in">LOGIN</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="btn_choose">CHOOSE</string>
+    <string name="no_account"><u>No account? Register Here</u></string>
+    <string name="mobilesite"><u>Go to Mobile Site</u></string>
+    <string name="fullsite"><u>View Full Site</u></string>
+    <string name="forgot"><u>Forgot?</u></string>
+    <string name="error_password">Enter Password</string>
+
+    <string name="title_activity_maps">Map</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+</resources>

@@ -1,0 +1,45 @@
+<ScrollView android:id="@+id/login_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/med_pad">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/user_form_profile"/>
+
+            <TextView
+                android:id="@+id/usernameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textview_large"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="username"
+                android:padding="@dimen/med_pad"/>
+
+            <Button
+                android:id="@+id/logoutButton"
+                style="@style/orangebutton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

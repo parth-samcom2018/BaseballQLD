@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+
+    <!--FONT SIZE -->
+    <dimen name="font_small">9dp</dimen>
+    <dimen name="font_med">11dp</dimen>
+    <dimen name="font_large">15dp</dimen>
+    <dimen name="font_extra_large">20dp</dimen>
+
+
+
+    <dimen name="grid_cell_height_small">50dp</dimen>
+    <dimen name="grid_cell_height_large">100dp</dimen>
+    <dimen name="grid_cell_height_extra_large">200dp</dimen>
+
+    <dimen name="flag_button_width">20dp</dimen>
+    <dimen name="user_image_width">45dp</dimen>
+    <dimen name="bubble_margin_left">25dp</dimen>
+
+
+</resources>

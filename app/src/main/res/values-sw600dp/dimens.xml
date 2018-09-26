@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <!--FONT SIZE -->
+    <dimen name="font_small">12dp</dimen>
+    <dimen name="font_med">14dp</dimen>
+    <dimen name="font_large">20dp</dimen>
+    <dimen name="font_extra_large">24dp</dimen>
+
+
+    <dimen name="flag_button_width">30dp</dimen>
+    <dimen name="user_image_width">60dp</dimen>
+    <dimen name="bubble_margin_left">25dp</dimen>
+
+    <dimen name="grid_cell_height_small">70dp</dimen>
+    <dimen name="grid_cell_height_large">120dp</dimen>
+    <dimen name="grid_cell_height_extra_large">240dp</dimen>
+
+
+
+</resources>

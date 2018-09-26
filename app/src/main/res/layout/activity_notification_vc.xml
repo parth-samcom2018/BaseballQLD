@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.nsw.baseballnsw.NotificationVC">
+
+    <include layout="@layout/textposter"
+        android:id="@+id/textposter"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/header_bg"
+        android:orientation="vertical"
+        android:id="@+id/relativeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:id="@+id/ll_back"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/back"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GROUPS"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:weightSum="2"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/splashlogo"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_grp_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="text"
+                    android:layout_gravity="center"
+                    android:text="@string/notification_title"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:singleLine="true"
+                    tools:ignore="TextViewEdits"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_weight="0.2"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:id="@+id/ll_edit"
+                android:layout_gravity="center|right"
+                android:gravity="center|right"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/tv_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_user"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:padding="5dp"
+                    android:layout_gravity="end|center"
+                    android:gravity="end|center"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_cell_height_small"
+        android:id="@+id/header"
+        android:padding="@dimen/small_pad"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/relativeLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/user_image_width"
+            android:layout_height="@dimen/user_image_width"
+            android:id="@+id/imageView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/splashlogo"
+            app:civ_border_width="0dp"
+            app:civ_border_color="#FF000000"
+            />
+
+        <TextView
+            android:id="@+id/firstTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="First Row of text"
+            android:layout_toRightOf="@+id/imageView"
+            style="@style/textview_large"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/secondTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sec Row of text"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_alignParentBottom="true"
+            style="@style/textview_normal"
+            android:layout_marginLeft="10dp"
+            android:singleLine="true"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/mainTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="main Row of text"
+        android:layout_below="@id/header"
+        style="@style/textview_normal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/med_pad"
+        android:fontFamily="@font/lato_regular"
+        android:textSize="12sp"
+        android:linksClickable="true"/>
+
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".NoticeBoardVC"
+        android:id="@+id/swiperefresh"
+        android:layout_above="@id/textposter"
+        android:layout_below="@id/mainTV">
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list">
+
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

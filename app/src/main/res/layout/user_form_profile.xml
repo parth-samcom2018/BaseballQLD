@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/login_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
+    android:scrollbars="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/transparent"
+        android:id="@+id/rl_main"
+        tools:context=".ProfileVC"
+        android:layout_marginTop="80dp">
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:id="@+id/frm"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            >
+
+            <ImageView
+                android:id="@+id/profilePic"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:src="@drawable/user_75_black"
+                android:background="@drawable/shape_user"
+                android:scaleType="center"
+                android:elevation="5dp"
+                android:layout_margin="0dp"
+                />
+
+            <ImageButton
+                android:id="@+id/ib_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/ic_mode_editing"
+                android:background="@drawable/shape_user_edit"
+                android:scaleType="center"
+                android:elevation="5dp"/>
+        </FrameLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:id="@+id/scrollView_p"
+            android:layout_below="@+id/frm"
+            android:fillViewport="true">
+
+
+            <LinearLayout
+                android:id="@+id/email_login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+
+                <Button
+                    android:id="@+id/photo_button"
+                    style="@style/orangebutton"
+                    android:layout_width="@dimen/grid_cell_height_extra_large"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:text="Choose Profile Photo"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:elevation="5dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/textshape"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/prompt_email"
+                            android:padding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.5"
+                            android:textStyle="normal|bold"
+                            android:layout_gravity="center"
+                            />
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:padding="10dp"
+                            app:hintEnabled="false">
+                            <EditText
+                                android:id="@+id/email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/prompt_email"
+                                android:inputType="text"
+                                android:background="@null"
+                                android:maxLines="1"
+                                android:textSize="16sp"
+                                android:singleLine="true"
+                                android:layout_weight="1"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:textColorHint="@color/black"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:imeOptions="actionNext"
+                                android:fontFamily="@font/lato_regular"
+                                />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/f_name"
+                            android:padding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.8"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"/>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:padding="10dp"
+                            app:hintEnabled="false">
+                            <EditText
+                                android:id="@+id/firstNameET"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/f_name"
+                                android:inputType="text"
+                                android:background="@null"
+                                android:maxLines="1"
+                                android:textSize="16sp"
+                                android:singleLine="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:imeOptions="actionNext"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColorHint="@color/black"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/l_name"
+                            android:padding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.8"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"/>
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            app:hintEnabled="false">
+                            <EditText
+                                android:id="@+id/surnameET"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/l_name"
+                                android:padding="10dp"
+                                android:background="@null"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:textSize="16sp"
+                                android:singleLine="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:imeOptions="actionNext"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColorHint="@color/black"
+                                />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <info.hoang8f.android.segmented.SegmentedGroup
+                    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/genderSG"
+                    android:layout_gravity="left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    segmentedgroup:sc_border_width="1.5dp"
+                    segmentedgroup:sc_corner_radius="5dp"
+                    segmentedgroup:sc_tint_color="@color/colorPrimary"
+                    android:background="@drawable/mfshape"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/buttonsg1"
+                        android:layout_width="@dimen/grid_cell_height_large"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rMale"
+                        style="@style/RadioButton"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        />
+
+                    <RadioButton
+                        android:layout_weight="1"
+                        android:id="@+id/buttonsg2"
+                        android:layout_width="@dimen/grid_cell_height_large"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rFemale"
+                        style="@style/RadioButton"
+                        android:fontFamily="@font/lato_regular"/>
+                </info.hoang8f.android.segmented.SegmentedGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="4"
+                    android:elevation="5dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/textshape"
+                    android:layout_margin="10dp"
+                    android:layout_alignParentBottom="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bday"
+                            android:padding="10dp"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.8"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"
+                            />
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:padding="10dp"
+                            app:hintEnabled="false">
+                            <EditText
+                                android:id="@+id/birthYearET"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/bday"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:background="@null"
+                                android:textSize="16sp"
+                                android:singleLine="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:imeOptions="actionNext"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColorHint="@color/black"
+                                />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:id="@+id/ll_country">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/country"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColor="@color/black"
+                                android:layout_weight="0.8"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                />
+                            <EditText
+                                android:id="@+id/countryET"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:background="@null"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:hint="@string/country"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLines="4"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColorHint="@color/black"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                />
+
+                            <Button
+                                android:layout_weight="1"
+                                android:id="@+id/chooseCountryButton"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                style="@style/orangebutton"
+                                android:text="@string/btn_choose"
+                                android:textSize="14sp"
+                                android:background="@android:color/transparent"
+                                android:inputType="text"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/postcode"
+                            android:fontFamily="@font/lato_regular"
+                            android:textColor="@color/black"
+                            android:layout_weight="0.8"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"
+                            />
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/postCodeET"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/postcode"
+                                android:inputType="phone"
+                                android:digits="0123456789+"
+                                android:background="@null"
+                                android:maxLines="1"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/lato_regular"
+                                android:textColorHint="@color/black"
+                                android:singleLine="true"
+                                android:imeOptions="actionDone"
+                                android:clickable="true"
+                                android:focusableInTouchMode="true" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/logoutButton"
+                        style="@style/transparentbutton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Log Out"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/lato_regular"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</ScrollView>

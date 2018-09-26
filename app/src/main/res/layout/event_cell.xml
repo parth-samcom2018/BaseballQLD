@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:background="@color/white"
+    android:id="@+id/rl_main">
+
+    <LinearLayout
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@drawable/eventshape"
+        android:layout_margin="15dp"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2.5"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="GROUP "
+                    style="@style/textview_small"
+                    android:layout_gravity="top"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    android:lines="1"
+                    android:fontFamily="@font/lato_regular" />
+
+                <TextView
+                    android:id="@+id/tv_group_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sport Club HQ"
+                    style="@style/textview_large"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/lato_regular"
+                    android:layout_weight="1.5"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/titleTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Main Game Title Text"
+                style="@style/textview_large"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lato_semibold"
+                android:layout_weight="1"/>
+
+
+
+            <TextView
+                android:id="@+id/locationTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Smaller Location Details"
+                style="@style/textview_small"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:lines="1"
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/lato_lightitalic"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_gravity="right|center">
+
+
+
+            <TextView
+                android:id="@+id/dateTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="1 Nov 2015"
+                android:gravity="right|center"
+                style="@style/textview_small"
+                android:layout_weight="1"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:id="@+id/timeTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="two lined text\n second line"
+                android:gravity="right|center_vertical"
+                style="@style/textview_small"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:visibility="gone"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

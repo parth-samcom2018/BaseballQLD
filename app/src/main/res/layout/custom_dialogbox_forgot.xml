@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tvTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="We will Send you email!"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:fontFamily="@font/lato_semibold"
+        />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputtextGroupName"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/tvTextTitle">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/inputtextGroupName"
+            android:layout_alignTop="@+id/inputtextGroupName"
+            android:backgroundTint="@android:color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Enter Email ID"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColorHint="@color/gray"
+            android:nextFocusDown="@+id/password"
+            android:nextFocusForward="@+id/password"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@+id/inputtextGroupName"/>
+
+</RelativeLayout>

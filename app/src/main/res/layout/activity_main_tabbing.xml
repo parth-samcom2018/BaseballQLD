@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        android:id="@+id/ll_main"
+        android:gravity="center"
+        android:weightSum="3"
+        android:background="@drawable/header_bg">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_top"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_log_in"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toolbar Title"
+                android:id="@+id/toolbar_title"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SETTINGS"
+                android:id="@+id/tv_left"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="10dp"
+                android:gravity="left"
+                android:layout_gravity="left"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:id="@+id/tv_end"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="10dp"
+                android:gravity="right"
+                android:layout_gravity="right"/>
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/ll_main"
+        android:background="@drawable/textshape">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_weight="1"
+            />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="54dip"
+            android:background="@color/white_transparent"
+            style="@style/NavigationTab"
+            app:tabGravity="fill"
+            android:fillViewport="true"
+            app:tabBackground="@android:color/transparent"
+            app:tabIndicatorColor="@color/tab_background_selected"
+            app:tabMode="fixed"
+            app:tabIndicatorHeight="0dp"
+            android:tabStripEnabled="false"
+            app:tabSelectedTextColor="@color/tab_background_selected" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        android:gravity="right|center"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/ll_edit"
+        android:visibility="gone"
+        android:layout_alignParentRight="true">
+        <TextView
+            android:id="@+id/tv_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:id="@+id/frm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:visibility="gone"
+        android:background="@drawable/shape_user"
+        android:elevation="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profilePic1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/user_75_black"
+            />
+        <ImageButton
+            android:id="@+id/ib_edit"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="top|right"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/ic_mode_editing"
+            android:background="@drawable/shape_user_edit"
+            android:scaleType="center"
+            android:elevation="5dp"/>
+
+    </FrameLayout>
+</RelativeLayout>

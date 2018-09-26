@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "610448573746",
+    "firebase_url": "https://baseball-qld.firebaseio.com",
+    "project_id": "baseball-qld",
+    "storage_bucket": "baseball-qld.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610448573746:android:3636ac5fda366e77",
+        "android_client_info": {
+          "package_name": "com.sportsclub.baseballqld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610448573746-k5c2sva1mnomc9hf8h1muak7ceiqredo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2eHai6eVCCpIGO41hCOtJauZ8ABQ_8H8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

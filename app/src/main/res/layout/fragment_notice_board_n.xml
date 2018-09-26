@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/white">
+
+        <include layout="@layout/textposter"
+            android:id="@+id/textposter" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty"
+            android:src="@drawable/noticeboard_empty_baseball"
+            android:visibility="gone"
+            />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".NoticeBoardVC"
+            android:id="@+id/swiperefresh"
+            android:layout_above="@id/textposter">
+
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list"/>
+
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+</ScrollView>
+
+
+
+

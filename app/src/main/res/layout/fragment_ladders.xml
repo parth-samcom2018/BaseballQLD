@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5.5"
+        android:id="@+id/ll_first"
+        android:layout_margin="15dp"
+        android:background="@android:color/transparent"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/team"
+            android:layout_gravity="center"
+            android:id="@+id/tv"
+            android:textColor="@color/textgray"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PL"
+            android:gravity="center"
+            android:textColor="@color/textgray"
+            android:layout_gravity="center"
+            android:id="@+id/tv4"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="W"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/textgray"
+            android:id="@+id/tv1"/>
+
+        <TextView
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="L"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/textgray"
+            android:id="@+id/tv2"/>
+
+
+        <TextView
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/score"
+            android:textColor="@color/textgray"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/tv5"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty"
+        android:visibility="gone"
+        android:textColor="@color/textgray"
+        android:text="No Data Found On Ladders"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/lato_regular"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/ll_second"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/ll_first"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/textshape"
+        android:elevation="10dp"
+        android:visibility="visible">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/swiperefresh">
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="0dp"
+                android:numColumns="2"
+                />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</RelativeLayout>
