@@ -10,6 +10,7 @@
         android:id="@+id/empty"
         android:src="@drawable/documents_empty"
         android:visibility="gone"
+        android:layout_marginTop="105dp"
         />
 
     <LinearLayout

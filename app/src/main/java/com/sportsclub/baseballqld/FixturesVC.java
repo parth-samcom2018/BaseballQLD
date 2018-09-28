@@ -1,6 +1,8 @@
 package com.sportsclub.baseballqld;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -17,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.EventResponse;
@@ -110,11 +113,67 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Event e = events.get(position);
+                EventVC.event = e;
+
+                //Toast.makeText(getActivity(), "" + e.eventId, Toast.LENGTH_SHORT).show();
+
+                deleteEvent();
+
+                return true;
+            }
+        });
 
         refreshLayout = v.findViewById(R.id.swiperefresh);
         refreshLayout.setOnRefreshListener(this);
 
         return v;
+    }
+
+    private void deleteEvent() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete Event");
+        builder.setMessage("Are you sure want to delete this event?");
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        Event e = events.get(0);
+                        EventVC.event = e;
+
+                        String auth = DM.getAuthString();
+
+                        DM.getApi().delete(auth,e.eventId, new Callback<Response>() {
+                            @Override
+                            public void success(Response response, Response response2) {
+
+                                Toast.makeText(getActivity(), "Successfully Deleted Event", Toast.LENGTH_SHORT).show();
+                                loadData();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(getActivity(), "Event cannot be delete!!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        //Toast.makeText(getActivity(), "Dismiss", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean initialLoaded = false;

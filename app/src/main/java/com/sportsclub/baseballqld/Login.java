@@ -43,6 +43,7 @@ public class Login extends BaseVC {
 
     public static String justRegisteredUsername = null;
     public static String justRegisteredPassword = null;
+    public static String justMemberID = null;
     SharedPreferences pref;
     public static final String MYPref = "Pref";
 
@@ -124,7 +125,7 @@ public class Login extends BaseVC {
         unique_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         DeviceID.setText("My ID is: " + unique_id);
         Log.i(TAG, "Registration Device: " + unique_id);
-
+        //Log.d("LoginID" , "LoginID:" + memberID);
     }
 
 
@@ -204,7 +205,7 @@ public class Login extends BaseVC {
         DM.member.access_token = tokenModel.access_token;
         DM.member.memberId = tokenModel.memberId;
 
-        Log.d("HQ","here is a memberID"+DM.member.memberId);
+        Log.d("LoginMember: ","here is a memberID"+DM.member.memberId);
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

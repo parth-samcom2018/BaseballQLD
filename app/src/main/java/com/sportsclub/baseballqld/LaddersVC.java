@@ -154,6 +154,9 @@ public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
 
+                ll_second.setVisibility(View.VISIBLE);
+                emptyIV.setVisibility(View.GONE);
+
                 Log.d(TAG, "success:" + response.getStatus());
             }
 
@@ -161,6 +164,9 @@ public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshL
             public void failure(RetrofitError error) {
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
+
+                ll_second.setVisibility(View.GONE);
+                emptyIV.setVisibility(View.VISIBLE);
 
                 Log.d(TAG, "failure: " + error.getMessage());
                 Log.d(TAG, "fail: " + error.getResponse());

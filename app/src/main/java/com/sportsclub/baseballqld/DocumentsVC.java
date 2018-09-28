@@ -124,9 +124,6 @@ public class DocumentsVC extends Fragment {
                         //we have a folder
                         f = rootFolder.childFolders.get(position);
                     }
-
-
-
                 }
                 else if(groupRootFolder != null)
                 {

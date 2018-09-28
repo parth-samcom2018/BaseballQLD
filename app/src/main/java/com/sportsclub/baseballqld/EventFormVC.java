@@ -1,5 +1,6 @@
 package com.sportsclub.baseballqld;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Service;
 import android.app.TimePickerDialog;
@@ -55,6 +56,7 @@ public class EventFormVC extends BaseVC {
     private LinearLayout ll_back, ll_save;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,9 +107,11 @@ public class EventFormVC extends BaseVC {
         final int month = c.get(Calendar.MONTH);
         final int day = c.get(Calendar.DAY_OF_MONTH);
 
+
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
 
                 DatePickerDialog d = new DatePickerDialog(EventFormVC.this, new DatePickerDialog.OnDateSetListener() {

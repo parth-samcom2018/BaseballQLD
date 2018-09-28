@@ -16,8 +16,8 @@
         android:src="@drawable/noticeboard_empty_baseball"
         android:visibility="gone"
         android:scaleType="fitCenter"
-        android:padding="10dp"
-        android:layout_margin="10dp"/>
+        android:layout_centerInParent="true"
+        />
 
     <ScrollView
         android:layout_width="match_parent"

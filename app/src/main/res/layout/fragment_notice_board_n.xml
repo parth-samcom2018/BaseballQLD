@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/empty"
             android:src="@drawable/noticeboard_empty_baseball"
+            android:layout_centerInParent="true"
             android:visibility="gone"
             />
 

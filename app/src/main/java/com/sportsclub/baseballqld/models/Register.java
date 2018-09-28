@@ -14,4 +14,5 @@ public class Register {
     public String birthYear;
     public String groupName;
     public int groupId;
+    public String justMemberID;
 }

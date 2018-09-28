@@ -42,6 +42,7 @@ import com.sportsclub.baseballqld.models.ClubNames;
 import com.sportsclub.baseballqld.models.ClubResponse;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Register;
+import com.sportsclub.baseballqld.models.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -530,7 +531,6 @@ public class Registration extends BaseVC{
                 Toast.makeText(Registration.this, "Registration success!", Toast.LENGTH_LONG).show();
                 DM.hideKeyboard(Registration.this);
                 pd.dismiss();
-
 
                 //triggers auto login
                 Login.justRegisteredUsername = registerModel.email;

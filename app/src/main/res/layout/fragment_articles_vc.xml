@@ -11,6 +11,7 @@
         android:id="@+id/empty"
         android:src="@drawable/articles_empty"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         />
 
     <android.support.v4.widget.SwipeRefreshLayout

@@ -278,8 +278,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
     }
 
 
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -337,7 +335,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                         pd.dismiss();
                         dialog.dismiss();
                         DM.hideKeyboard(MediaVC.this.getActivity());
-
+                        loadData();
                     }
 
                     @Override
@@ -346,6 +344,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                         pd.dismiss();
                         dialog.dismiss();
                         DM.hideKeyboard(MediaVC.this.getActivity());
+                        loadData();
                     }
                 });
 
@@ -601,6 +600,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 public void failure(RetrofitError error) {
                     Toast.makeText(getActivity(),"Imaged posting failed: "+error.getMessage(),Toast.LENGTH_LONG).show();
                     pd.hide();
+                    loadData();
                 }
             });
 

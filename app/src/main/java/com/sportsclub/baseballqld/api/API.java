@@ -288,4 +288,9 @@ public interface API {
     public void delete(@Header("Authorization") String auth,
                               @Path("eventID") int eventID,
                               Callback<Response> callback);
+
+    @DELETE("/apiv2/media/delete/{MediaId}")
+    public void deleteMediaItem(@Header("Authorization") String auth,
+                                @Path("MediaId") int mediaID,
+                                Callback<Response> callback);
 }

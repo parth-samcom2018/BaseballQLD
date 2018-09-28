@@ -86,9 +86,7 @@ public class GroupFragment extends Fragment {
 
                 final ImageView myImageView = convertView.findViewById(R.id.myImageView);
 
-
                 final TextView tv = convertView.findViewById(R.id.textView);
-
 
                 Picasso.Builder builder = new Picasso.Builder(GroupFragment.this.getActivity());
                 builder.listener(new Picasso.Listener() {
@@ -107,8 +105,6 @@ public class GroupFragment extends Fragment {
                 catch (NullPointerException n){
                     n.printStackTrace();
                 }
-
-
 
                 return convertView;
             }
