@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.EventResponse;
 import com.sportsclub.baseballqld.models.Group;
-import com.sportsclub.baseballqld.models.Token;
 
 import java.util.List;
 import java.util.Vector;
@@ -44,7 +43,6 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private SwipeRefreshLayout refreshLayout;
     private ImageView emptyIV;
     public static boolean oneShotRefresh = false;
-    Token tokenModel;
     Dialog dialog;
 
     //MODELS
@@ -91,7 +89,6 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         listView = v.findViewById(R.id.list);
 
         listAdapter = new ArrayAdapter<Event>(this.getContext(), R.layout.event_cell) {
-
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -198,7 +195,7 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                                 }
                             });
                         } else {
-                            Toast.makeText(getActivity(), "Cannot delete this event!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Sorry!! you cannot delete this event!!", Toast.LENGTH_SHORT).show();
                         }
 
                         dialog.dismiss();

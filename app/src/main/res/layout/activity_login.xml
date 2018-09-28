@@ -174,7 +174,6 @@
                 android:text="@string/no_account"
                 android:inputType="text"
                 android:textStyle="bold"
-                android:background="@color/white_transparent"
                 android:layout_below="@+id/mainLayout"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 />

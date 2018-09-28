@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Long Press to delete events that you created!!"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:fontFamily="@font/lato_regular" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +27,8 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swiperefresh">
+        android:id="@+id/swiperefresh"
+        android:layout_below="@+id/tvMessage">
 
         <ListView
             android:layout_width="match_parent"
