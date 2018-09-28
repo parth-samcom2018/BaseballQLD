@@ -1,6 +1,5 @@
 package com.sportsclub.baseballqld;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,8 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sportsclub.baseballqld.models.ClubNames;
-import com.sportsclub.baseballqld.models.ClubResponse;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.EventResponse;
 import com.sportsclub.baseballqld.models.Group;
@@ -132,16 +129,11 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         };
         listView.setAdapter(listAdapter);
 
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Event e = events.get(position);
                 EventVC.event = e;
-
-                /*Toast.makeText(getActivity(), "" + e.eventId, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "" + e.eventId);*/
 
                 Intent i = new Intent(EventsFragment.this.getActivity(), EventVC.class);
                 i.putExtra("Key", e.groupName);
@@ -161,23 +153,11 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Log.d(TAG, "event id: " + e.eventId);
                 Log.d(TAG, "memberID: " + DM.member.memberId);
 
-
-                /*if (e.memberId == DM.member.memberId) {
-                    Toast.makeText(getActivity(), "Successfully Delete this event!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Cannot delete this event!!", Toast.LENGTH_SHORT).show();
-                }*/
-
                 dialog = new Dialog(getActivity());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setCancelable(true);
                 dialog.setContentView(R.layout.my_events);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-                /*Event e = events.get(0);
-                EventVC.event = e;*/
-
-                //int selectedItem = listView.getId();
 
                 TextView tvdata = dialog.findViewById(R.id.tvData);
 
@@ -226,9 +206,6 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 });
                 dialog.show();
 
-                /*int selectedItem = i;
-                Toast.makeText(getActivity(), "" + selectedItem, Toast.LENGTH_SHORT).show();*/
-
                 return true;
             }
         });
@@ -237,8 +214,6 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         return v;
     }
-
-
 
     // NEEDED with configChange in manifest, stops view changer from recalling onCreateView
     private boolean initialLoaded = false;
@@ -263,12 +238,10 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
 
                 EventsFragment.this.events = events.getData();
-                //Log.d("hq", "events: " + events.getData().size() + "");
-                //Log.d("events", "coming: " + event.eventId + "");
+
                 listAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
-
 
                 if (events.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
                 else emptyIV.setVisibility(View.GONE);
