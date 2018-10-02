@@ -229,22 +229,27 @@ public class NotificationVC extends BaseVC {
                         btnYes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                if (DM.member.memberId == c.memberId) {
+                                    DM.getApi().CommentsDelete(DM.getAuthString(), c.notificationCommentId, new Callback<Response>() {
+                                        @Override
+                                        public void success(Response response, Response response2) {
+                                            Toast.makeText(NotificationVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
+                                            refreshNotification();
+                                            refreshLayout.setRefreshing(true);
+                                        }
 
-                                DM.getApi().CommentsDelete(DM.getAuthString(), c.notificationCommentId, new Callback<Response>() {
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        Toast.makeText(NotificationVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
-                                        refreshNotification();
-                                        refreshLayout.setRefreshing(true);
-                                    }
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(NotificationVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
+                                            refreshNotification();
+                                            refreshLayout.setRefreshing(true);
+                                        }
+                                    });
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Toast.makeText(NotificationVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
-                                        refreshNotification();
-                                        refreshLayout.setRefreshing(true);
-                                    }
-                                });
+                                }
+                                else {
+                                    Toast.makeText(NotificationVC.this, "You are authorized to delete this notification!!", Toast.LENGTH_SHORT).show();
+                                }
 
                                 dialog.dismiss();
                             }

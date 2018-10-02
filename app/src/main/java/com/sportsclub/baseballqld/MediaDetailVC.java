@@ -169,23 +169,30 @@ public class MediaDetailVC extends BaseVC {
                             @Override
                             public void onClick(View view) {
 
-                                String auth = DM.getAuthString();
+                                if (DM.member.memberId == mc.memberId) {
 
-                                DM.getApi().mediaCommentdelete(auth, mc.mediaCommentId, new Callback<Response>() {
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        Toast.makeText(MediaDetailVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
-                                        refreshMedia();
-                                        refreshLayout.setRefreshing(true);
-                                    }
+                                    String auth = DM.getAuthString();
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Toast.makeText(MediaDetailVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
-                                        refreshMedia();
-                                        refreshLayout.setRefreshing(true);
-                                    }
-                                });
+                                    DM.getApi().mediaCommentdelete(auth, mc.mediaCommentId, new Callback<Response>() {
+                                        @Override
+                                        public void success(Response response, Response response2) {
+                                            Toast.makeText(MediaDetailVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
+                                            refreshMedia();
+                                            refreshLayout.setRefreshing(true);
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(MediaDetailVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
+                                            refreshMedia();
+                                            refreshLayout.setRefreshing(true);
+                                        }
+                                    });
+                                }
+
+                                else {
+                                    Toast.makeText(MediaDetailVC.this, "You are authorized to delete this notification!!", Toast.LENGTH_SHORT).show();
+                                }
 
                                 dialog.dismiss();
                             }

@@ -268,9 +268,8 @@ public class ProfileFragment extends Fragment {
 
     private void unregisterForPush()
     {
-        String auth = DM.getAuthString();
 
-        DM.getApi().logoutUser(auth, new Callback<Response>() {
+        DM.getApi().logoutUser(DM.getAuthString(), new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(getActivity(), "Successfully Remove Push notification", Toast.LENGTH_SHORT).show();

@@ -388,14 +388,14 @@ public class EventFormVC extends BaseVC {
 
     private void networkPost() {
 
+        Log.d(TAG, "event created: "+event.eventId);
+
         DM.getApi().postEvents(DM.getAuthString(), event, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
                 Toast.makeText(EventFormVC.this, "Event Created!", Toast.LENGTH_LONG).show();
                 EventsFragment.oneShotRefresh = true; //reload events...
                 EventFormVC.this.finish();
-
-
             }
 
             @Override

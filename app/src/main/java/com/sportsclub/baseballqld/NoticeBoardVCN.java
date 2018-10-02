@@ -59,6 +59,8 @@ import retrofit.client.Response;
 
 public class NoticeBoardVCN extends Fragment {
 
+
+    private static final String TAG = "QLD";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     //MODEL
     public Group group; //OPTIONAL!
@@ -371,23 +373,28 @@ public class NoticeBoardVCN extends Fragment {
                                 @Override
                                 public void onClick(View view) {
 
-                                    String auth = DM.getAuthString();
+                                    if (DM.member.memberId == n.memberId) {
+                                        String auth = DM.getAuthString();
 
-                                    DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
-                                        @Override
-                                        public void success(Response response, Response response2) {
-                                            Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
-                                            loadData(true);
-                                            refreshLayout.setRefreshing(true);
-                                        }
+                                        DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
+                                            @Override
+                                            public void success(Response response, Response response2) {
+                                                Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                                loadData(true);
+                                                refreshLayout.setRefreshing(true);
+                                            }
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
-                                            loadData(true);
-                                            refreshLayout.setRefreshing(true);
-                                        }
-                                    });
+                                            @Override
+                                            public void failure(RetrofitError error) {
+                                                Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                                loadData(true);
+                                                refreshLayout.setRefreshing(true);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        Toast.makeText(getActivity(), "You are authorized to delete this notification!!", Toast.LENGTH_SHORT).show();
+                                    }
 
                                     dialog.dismiss();
                                 }
@@ -587,6 +594,9 @@ public class NoticeBoardVCN extends Fragment {
                         dialog.setContentView(R.layout.my_notifications);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+                        Log.d(TAG, "notification created: " + n.notificationId);
+                        Log.d(TAG, "notification id: " + n.familyId);
+                        Log.d(TAG, "memberID: " + DM.member.memberId);
 
                         Button btn_no = dialog.findViewById(R.id.btn_no);
                         btn_no.setOnClickListener(new View.OnClickListener() {
@@ -602,24 +612,28 @@ public class NoticeBoardVCN extends Fragment {
                             @Override
                             public void onClick(View view) {
 
-                                String auth = DM.getAuthString();
+                                if (DM.member.memberId == n.memberId) {
+                                    String auth = DM.getAuthString();
 
-                                DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
-                                    @Override
-                                    public void success(Response response, Response response2) {
-                                        Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
-                                        loadData(true);
-                                        refreshLayout.setRefreshing(true);
-                                    }
+                                    DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
+                                        @Override
+                                        public void success(Response response, Response response2) {
+                                            Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                            loadData(true);
+                                            refreshLayout.setRefreshing(true);
+                                        }
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
-                                        loadData(true);
-                                        refreshLayout.setRefreshing(true);
-                                    }
-                                });
-
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                            loadData(true);
+                                            refreshLayout.setRefreshing(true);
+                                        }
+                                    });
+                                }
+                                else {
+                                    Toast.makeText(getActivity(), "You are authorized to delete this notification!!", Toast.LENGTH_SHORT).show();
+                                }
                                 dialog.dismiss();
                             }
                         });

@@ -313,5 +313,15 @@ public interface API {
                                    @Path("mediacommentid") int mediacommentid,
                                    Callback<Response> callback);
 
+    @DELETE("/apiv2/media/comment/delete/{eventCommentId}")
+    public void eventCommentdelete(@Header("Authorization") String auth,
+                                   @Path("eventCommentId") int eventCommentId,
+                                   Callback<Response> callback);
+
+    @DELETE("/apiv2/articles/delete/{articleid}")
+    public void articleDelete(@Header("Authorization") String auth,
+                              @Path("articleID") int articleID,
+                              Callback<Response> callback);
+
 
 }
