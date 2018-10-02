@@ -1,9 +1,11 @@
 package com.sportsclub.baseballqld;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +18,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -52,7 +56,7 @@ public class MediaDetailVC extends BaseVC {
     private ArrayAdapter<Event> listAdapter;
     private SwipeRefreshLayout refreshLayout;
     private TextPoster textPoster;
-
+    Dialog dialog;
     private SliderLayout slider;
 
     //Header
@@ -138,6 +142,60 @@ public class MediaDetailVC extends BaseVC {
                         //.fetch();
                         .into(userIV);
 
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        dialog = new Dialog(MediaDetailVC.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.my_notifications_comments);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                        TextView tvdata = dialog.findViewById(R.id.tvData);
+
+                        tvdata.setText("" + mc.comment);
+
+                        Button btn_no = dialog.findViewById(R.id.btn_no);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Button btnYes = dialog.findViewById(R.id.btn_yes);
+
+                        btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                String auth = DM.getAuthString();
+
+                                DM.getApi().mediaCommentdelete(auth, mc.mediaCommentId, new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        Toast.makeText(MediaDetailVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
+                                        refreshMedia();
+                                        refreshLayout.setRefreshing(true);
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(MediaDetailVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
+                                        refreshMedia();
+                                        refreshLayout.setRefreshing(true);
+                                    }
+                                });
+
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+
+
+                        return true;
+                    }
+                });
 
                 return convertView;
             }
@@ -448,7 +506,7 @@ public class MediaDetailVC extends BaseVC {
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(final DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
                 //Toast.makeText(MediaDetailVC.this, "" + selectedMedia.mediaId, Toast.LENGTH_SHORT).show();
@@ -463,6 +521,7 @@ public class MediaDetailVC extends BaseVC {
                         refreshLayout.setRefreshing(true);
                         //startActivity(new Intent(MediaDetailVC.this, GroupVC.class));
                         finish();
+                        dialogInterface.dismiss();
                     }
 
                     @Override

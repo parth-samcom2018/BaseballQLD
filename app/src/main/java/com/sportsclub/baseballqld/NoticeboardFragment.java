@@ -75,7 +75,7 @@ public class NoticeboardFragment extends Fragment {
     private TextPoster textPoster;
     private ImageView emptyIV, userIV, iv;
     private Button flagButton;
-
+    Dialog dialog;
 
     public NoticeboardFragment() {
         // Required empty public constructor
@@ -327,6 +327,14 @@ public class NoticeboardFragment extends Fragment {
                             }
                         }
                     });
+
+                    convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            Toast.makeText(getActivity(), "delete this fragment notification view", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
                 }
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
@@ -508,6 +516,60 @@ public class NoticeboardFragment extends Fragment {
                     }
                 });
 
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        dialog = new Dialog(getActivity());
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.my_notifications);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                        TextView tvdata = dialog.findViewById(R.id.tvData);
+
+                        tvdata.setText("" + n.comments);
+
+                        Button btn_no = dialog.findViewById(R.id.btn_no);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Button btnYes = dialog.findViewById(R.id.btn_yes);
+
+                        btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                String auth = DM.getAuthString();
+
+                                DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                        loadData(true);
+                                        refreshLayout.setRefreshing(true);
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                        loadData(true);
+                                        refreshLayout.setRefreshing(true);
+                                    }
+                                });
+
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+
+
+                        return true;
+                    }
+                });
 
                 return convertView;
             }

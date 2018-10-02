@@ -106,6 +106,8 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
         listView.setDivider(null);
 
 
+        loadData();
+
         listAdapter = new ArrayAdapter(this.getActivity(), R.layout.media_cell) {
 
 
@@ -156,6 +158,8 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                                     tv_media.setVisibility(View.GONE);
                                 }
 
+                                showiv.setScaleType(ImageView.ScaleType.FIT_XY);
+
                                 progressBar.setVisibility(View.GONE);
 
                                 tv_media.setVisibility(View.GONE);
@@ -204,6 +208,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(MediaVC.this.getActivity()));
 
+
                 return convertView;
             }
 
@@ -226,7 +231,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if (checkpermission()==true){
                     cameraAction();

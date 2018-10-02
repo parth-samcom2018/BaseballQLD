@@ -1,7 +1,9 @@
 package com.sportsclub.baseballqld;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +39,8 @@ public class NotificationVC extends BaseVC {
 
     Context context = NotificationVC.this;
     private static final String TAG = NotificationVC.class.getSimpleName();
+
+    Dialog dialog;
 
     public static Notification notification;
     JSONObject jsonObject;
@@ -172,7 +177,7 @@ public class NotificationVC extends BaseVC {
 
                 Log.d("hq", "notification cell height: " + convertView.getHeight());
 
-                NotificationComment c = notification.comments.get(position);
+                final NotificationComment c = notification.comments.get(position);
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
                 String topString = "<font color='e2441f'>" + c.memberName + "</font> group";
@@ -198,6 +203,58 @@ public class NotificationVC extends BaseVC {
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(NotificationVC.this));
 
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        dialog = new Dialog(NotificationVC.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.my_notifications_comments);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                        TextView tvdata = dialog.findViewById(R.id.tvData);
+
+                        tvdata.setText("" + c.comment);
+
+                        Button btn_no = dialog.findViewById(R.id.btn_no);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Button btnYes = dialog.findViewById(R.id.btn_yes);
+
+                        btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                DM.getApi().CommentsDelete(DM.getAuthString(), c.notificationCommentId, new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        Toast.makeText(NotificationVC.this, "Delete Comments", Toast.LENGTH_SHORT).show();
+                                        refreshNotification();
+                                        refreshLayout.setRefreshing(true);
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(NotificationVC.this, "Cannot delete this comment!!", Toast.LENGTH_SHORT).show();
+                                        refreshNotification();
+                                        refreshLayout.setRefreshing(true);
+                                    }
+                                });
+
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+
+
+                        return true;
+                    }
+                });
 
                 return convertView;
             }
@@ -208,6 +265,7 @@ public class NotificationVC extends BaseVC {
             }
         };
         listView.setAdapter(listAdapter);
+
 
         refreshLayout = findViewById(R.id.swiperefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

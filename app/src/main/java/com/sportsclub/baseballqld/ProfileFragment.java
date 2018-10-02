@@ -252,6 +252,7 @@ public class ProfileFragment extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove("HQUsername");
         editor.remove("HQToken");
+        //editor.remove("DeviceId");
         editor.apply();
 
         unregisterForPush();
@@ -267,13 +268,22 @@ public class ProfileFragment extends Fragment {
 
     private void unregisterForPush()
     {
-        //TODO call api and unregister with device token
+        String auth = DM.getAuthString();
 
-        try {
-            FirebaseInstanceId.getInstance().deleteInstanceId();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        DM.getApi().logoutUser(auth, new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getActivity(), "Successfully Remove Push notification", Toast.LENGTH_SHORT).show();
+                Log.d("push", response2.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), "Something is wrong:" + error, Toast.LENGTH_SHORT).show();
+                Log.d("push" , error.toString());
+            }
+        });
+
     }
 
     private void updateAction()

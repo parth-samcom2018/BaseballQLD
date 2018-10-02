@@ -43,7 +43,6 @@ public class Login extends BaseVC {
 
     public static String justRegisteredUsername = null;
     public static String justRegisteredPassword = null;
-    public static String justMemberID = null;
     SharedPreferences pref;
     public static final String MYPref = "Pref";
 

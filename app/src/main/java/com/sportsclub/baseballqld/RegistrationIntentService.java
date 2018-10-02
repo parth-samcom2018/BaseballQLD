@@ -69,6 +69,7 @@ public class RegistrationIntentService extends IntentService {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("GCM_TOKEN",token);
                     editor.commit();
+                    Log.d("deviceID", token);
                 }
 
                 @Override

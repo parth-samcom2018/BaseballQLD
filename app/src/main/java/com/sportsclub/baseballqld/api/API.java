@@ -293,4 +293,25 @@ public interface API {
     public void deleteMediaItem(@Header("Authorization") String auth,
                                 @Path("MediaId") int mediaID,
                                 Callback<Response> callback);
+
+    @POST("/apiv2/account/logout")
+    public void logoutUser(@Header("Authorization") String auth,
+                           Callback<Response> callback);
+
+    @DELETE("/apiv2/notifications/delete/{notificationId}")
+    public void notificationDelete(@Header("Authorization") String auth,
+                                   @Path("notificationId") int notificationID,
+                                   Callback<Response> callback);
+
+    @DELETE("/apiv2/notifications/comment/delete/{notificationCommentId}")
+    public void CommentsDelete(@Header("Authorization") String auth,
+                               @Path("notificationCommentId") int notificationCommentId,
+                               Callback<Response> callback);
+
+    @DELETE("/apiv2/media/comment/delete/{mediacommentid}")
+    public void mediaCommentdelete(@Header("Authorization") String auth,
+                                   @Path("mediacommentid") int mediacommentid,
+                                   Callback<Response> callback);
+
+
 }

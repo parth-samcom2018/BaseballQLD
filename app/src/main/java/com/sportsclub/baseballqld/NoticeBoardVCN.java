@@ -1,6 +1,7 @@
 package com.sportsclub.baseballqld;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,6 +73,8 @@ public class NoticeBoardVCN extends Fragment {
     private CircleImageView useriv;
     private Button flagButton;
     private boolean online;
+    Dialog dialog;
+
     // NEEDED with configChange in manifest, stops view changer from recalling onCreateView
     private boolean initialLoaded = false;
 
@@ -341,6 +346,58 @@ public class NoticeBoardVCN extends Fragment {
                             }
                         }
                     });
+
+                    convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            dialog = new Dialog(getActivity());
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setCancelable(true);
+                            dialog.setContentView(R.layout.my_notifications);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+                            Button btn_no = dialog.findViewById(R.id.btn_no);
+                            btn_no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            Button btnYes = dialog.findViewById(R.id.btn_yes);
+
+                            btnYes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    String auth = DM.getAuthString();
+
+                                    DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
+                                        @Override
+                                        public void success(Response response, Response response2) {
+                                            Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                            loadData(true);
+                                            refreshLayout.setRefreshing(true);
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                            loadData(true);
+                                            refreshLayout.setRefreshing(true);
+                                        }
+                                    });
+
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+
+
+                            return true;
+                        }
+                    });
                 }
 
                 //top title in listitem
@@ -519,7 +576,59 @@ public class NoticeBoardVCN extends Fragment {
                     }
                 });
 
+                convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        //Toast.makeText(getActivity(), "delete this item", Toast.LENGTH_SHORT).show();
 
+                        dialog = new Dialog(getActivity());
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.my_notifications);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+                        Button btn_no = dialog.findViewById(R.id.btn_no);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Button btnYes = dialog.findViewById(R.id.btn_yes);
+
+                        btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                String auth = DM.getAuthString();
+
+                                DM.getApi().notificationDelete(auth, n.notificationId, new Callback<Response>() {
+                                    @Override
+                                    public void success(Response response, Response response2) {
+                                        Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                        loadData(true);
+                                        refreshLayout.setRefreshing(true);
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                        loadData(true);
+                                        refreshLayout.setRefreshing(true);
+                                    }
+                                });
+
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+
+
+                        return true;
+                    }
+                });
                 return convertView;
             }
 
