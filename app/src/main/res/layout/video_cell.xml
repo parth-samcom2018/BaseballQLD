@@ -45,7 +45,7 @@
 
 
         <VideoView
-            android:id="@+id/videoview"
+            android:id="@+id/videoview_main"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_cell_height_extra_large"
             android:visibility="visible"
@@ -53,6 +53,7 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:background="@drawable/textshape"/>
+
 
 
         <TextView
