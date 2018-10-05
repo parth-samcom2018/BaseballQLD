@@ -221,5 +221,6 @@
         android:layout_marginTop="22dp"
         android:text="Large Text"
         android:visibility="gone"
+        android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 </RelativeLayout>

@@ -148,6 +148,10 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
+            android:name=".VideoDetailsVC"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
             android:name=".EventFormVC"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"

@@ -171,7 +171,7 @@ public class DocumentsVC extends Fragment {
                         if(chosenFile !=null)
                         {
                             //open file
-                            // Toast.makeText(getContext(),"Open File "+chosenFile.fileName,Toast.LENGTH_LONG).show();
+                             Toast.makeText(getActivity(),"Open File "+chosenFile.fileName,Toast.LENGTH_LONG).show();
 
                             //USE google opener! http://stackoverflow.com/questions/4947591/open-a-pdf-file-inside-a-webview
 

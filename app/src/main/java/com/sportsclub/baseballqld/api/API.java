@@ -1,5 +1,6 @@
 package com.sportsclub.baseballqld.api;
 
+import com.sportsclub.baseballqld.VideoAlbumResponse;
 import com.sportsclub.baseballqld.models.Article;
 import com.sportsclub.baseballqld.models.ArticleComment;
 import com.sportsclub.baseballqld.models.ArticleResponse;
@@ -20,6 +21,7 @@ import com.sportsclub.baseballqld.models.Profile;
 import com.sportsclub.baseballqld.models.Register;
 import com.sportsclub.baseballqld.models.Token;
 import com.sportsclub.baseballqld.models.Delete;
+import com.sportsclub.baseballqld.models.VideoAlbum;
 
 import java.util.List;
 
@@ -151,6 +153,16 @@ public interface API {
     public void postMediaAlbum(@Header("Authorization") String auth,
                                @Field("name") String name,
                                @Field("groupid") int groupID,
+                               @Field("albumtype") String type,
+                               Callback<Response> callback);
+
+
+    @FormUrlEncoded
+    @POST("/apiv2/media/album")
+    public void postVideoAlbum(@Header("Authorization") String auth,
+                               @Field("name") String name,
+                               @Field("groupid") int groupID,
+                               @Field("albumtype") String type,
                                Callback<Response> callback);
 
     @FormUrlEncoded
@@ -208,6 +220,9 @@ public interface API {
     @GET("/api/media/album/{id}")
     public void getMediaAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
 
+    @GET("/apiv2/video/album/{id}")
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
+
     //new api v2
     @GET("/apiv2/media/album/{id}")
     public void getMediaAlbums(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbumResponse> response);
@@ -249,6 +264,14 @@ public interface API {
                                  Callback<Response> response);
 
     @Multipart
+    @POST("apiv2/media/postvideo/{albumID}")
+    public void postVideoToAlbum(@Header("Authorization") String auth,
+                                 @Path("id") int mediaAlbumID,
+                                 @Part("videourl") TypedFile file,
+                                 Callback<Response> response);
+
+
+    @Multipart
     @POST("/apiv2/media/postimage/{albumID}")
     public void postImageToAlbums(@Header("Authorization") String auth,
                                   @Path("albumID") int albumID,
@@ -259,6 +282,8 @@ public interface API {
     @GET("/apiv2/media/get/{groupID}")
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
+    @GET("/apiv2/video/get/{groupID}")
+    public void getGroupingVideoAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
 
 
     //new api v2

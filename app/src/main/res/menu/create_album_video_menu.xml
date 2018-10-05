@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/createAlbum"
-        android:title="Create Album "
+        android:title="Create Video Album"
         app:showAsAction="ifRoom" />
 </menu>

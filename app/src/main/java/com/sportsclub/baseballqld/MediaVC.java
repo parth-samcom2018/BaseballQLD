@@ -68,6 +68,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
 
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_PICK_IMAGE = 2;
+    private static final String TAG = "QLD";
 
     boolean isSelected;
 
@@ -195,6 +196,23 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
 
                             }
                         });
+
+                        showiv.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                if (album.mediaAlbumId == DM.member.memberId) {
+                                    Log.d(TAG, "memberID: " + DM.member.memberId);
+                                    Log.d(TAG, "mediaalbumID: " + album.mediaAlbumId);
+
+                                    Toast.makeText(getActivity(), "Delete album", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(getActivity(), "Cannot delete album", Toast.LENGTH_SHORT).show();
+                                }
+
+                                return true;
+                            }
+                        });
                     }
                 }
 
@@ -207,6 +225,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 }
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(MediaVC.this.getActivity()));
+
 
 
                 return convertView;
@@ -332,7 +351,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 pd = DM.getPD(MediaVC.this.getActivity(),"Loading Creating Album..");
                 pd.show();
 
-                DM.getApi().postMediaAlbum(DM.getAuthString(), name,  group.groupId, new Callback<Response>() {
+                DM.getApi().postMediaAlbum(DM.getAuthString(), name,  group.groupId, "", new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
                         Toast.makeText(MediaVC.this.getActivity(),"Album Created!",Toast.LENGTH_LONG).show();

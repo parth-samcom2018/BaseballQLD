@@ -29,6 +29,8 @@ import retrofit.client.Response;
 
 public class GroupVC extends BaseVC {
 
+    //Media = Photos screen
+
     //MODEL
     public static Group group;
     public static Ladders ladder;
@@ -44,12 +46,13 @@ public class GroupVC extends BaseVC {
     private NoticeBoardVCN noticeBoardVCN;
     private ArticlesVC articlesVC;
     private MediaVC mediaVC;
+    private VideoVC videoVC;
     private FixturesVC fixturesVC;
     private LaddersVC laddersVC;
     private DocumentsVC documentsVC;
     public Folder rootFolder = null;
 
-    private String[] titles = {"Notification", "Fixtures", "Ladders", "Media", "Articles", "Documents"};
+    private String[] titles = {"Notification", "Fixtures", "Ladders", "Photos", "Videos", "Articles", "Documents"};
 
 
     @Override
@@ -118,12 +121,18 @@ public class GroupVC extends BaseVC {
 
                             mediaVC.loadIfUnloaded();
                             break;
+
                         case 4:
+
+                            videoVC.loadIfUnloaded();
+                            break;
+
+                        case 5:
 
                             articlesVC.loadIfUnloaded();
                             break;
 
-                        case 5:
+                        case 6:
                             documentsVC.loadIfUnloaded();
                             break;
                     }
@@ -157,6 +166,9 @@ public class GroupVC extends BaseVC {
             this.mediaVC = (MediaVC) MediaVC.instantiate(this, MediaVC.class.getName());
             this.mediaVC.group = group;
 
+            this.videoVC = (VideoVC) VideoVC.instantiate(this, VideoVC.class.getName());
+            this.videoVC.group = group;
+
             this.articlesVC = (ArticlesVC) ArticlesVC.instantiate(this, ArticlesVC.class.getName());
             this.articlesVC.group = group;
 
@@ -186,14 +198,15 @@ public class GroupVC extends BaseVC {
             else if (position == 1) return fixturesVC;
             else if (position ==2) return laddersVC;
             else if (position == 3) return mediaVC;
-            else if (position ==4) return articlesVC;
+            else if (position == 4) return videoVC;
+            else if (position ==5) return articlesVC;
             else return documentsVC;
         }
 
         @Override
         public int getCount() {
             // tab count
-            return 6;
+            return 7;
         }
 
         @Override

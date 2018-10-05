@@ -15,6 +15,8 @@ public class Member {
     public String access_token;
     public int memberId;
 
+    public String emailID;
+
     //only gotten by calling memberdetails node;
     public String firstName;
     public String lastName;

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.Profile;
+import com.sportsclub.baseballqld.models.Token;
 import com.squareup.picasso.Picasso;
 
 
@@ -62,6 +64,7 @@ public class MainTabbing extends BaseVC {
     private Context context = this;
 
     Group g;
+    Token token;
 
     public static Group group;
 
@@ -248,6 +251,11 @@ public class MainTabbing extends BaseVC {
 
         //this.setTitle(group.groupName);
 
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+
+        //timestamp
+        //Toast.makeText(context, "" + ts, Toast.LENGTH_SHORT).show();
 
         DM.getApi().getMemberDetailing(DM.getAuthString(), new Callback<Profile>() {
             @Override

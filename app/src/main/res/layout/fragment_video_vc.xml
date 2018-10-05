@@ -1,0 +1,99 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MediaVC"
+    android:clickable="true">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty"
+        android:src="@drawable/media_empty"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar_media_main"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:elevation="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_media_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="Baseball NSW"
+        android:elevation="5dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/progressBar_media_main"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_cell_height_small"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:orientation="vertical"
+            android:background="@color/black"
+            >
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/med_pad"
+            >
+            <ImageView
+                android:id="@+id/cameraIV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/camera"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                />
+
+            <ImageView
+                android:id="@+id/uploadIV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/upload"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swiperefresh"
+        android:layout_above="@+id/ll"
+        android:layout_alignParentTop="true"
+        >
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>
