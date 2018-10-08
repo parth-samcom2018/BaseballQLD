@@ -143,12 +143,14 @@
             android:name=".PDFVC"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".MediaDetailVC"
+        <activity android:name=".VideoGridVC"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".VideoDetailVC"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".VideoDetailsVC"
+            android:name=".MediaDetailVC"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

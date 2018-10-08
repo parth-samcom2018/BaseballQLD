@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible"
+            android:visibility="gone"
             android:indeterminate="true"
             android:elevation="5dp"/>
 
@@ -44,8 +44,8 @@
             android:visibility="visible"/>
 
 
-        <VideoView
-            android:id="@+id/videoview_main"
+        <ImageView
+            android:id="@+id/iv"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_cell_height_extra_large"
             android:visibility="visible"
@@ -53,7 +53,6 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:background="@drawable/textshape"/>
-
 
 
         <TextView
@@ -78,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:max="100"
+            android:visibility="gone"
             android:progressBackgroundTint="@color/black"
             android:layout_alignParentBottom="true"
             />

@@ -515,7 +515,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             cursor.close();
 
             b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640,640);
-            Log.d("hipcook", "I now have a bitmap:" + b.getWidth());
+            Log.d("photo", "I now have a bitmap:" + b.getWidth());
 
 
 
@@ -561,7 +561,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
         for(int i=0; i<albums.size(); i++)
         {
             sa[i] = albums.get(i).name;
-            Log.d("hq","album id:"+albums.get(i).mediaAlbumId);
+            Log.d("photo","album id:"+albums.get(i).mediaAlbumId);
         }
         picker.setDisplayedValues(sa);
 
@@ -571,6 +571,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             public void onClick(DialogInterface dialog, int which) {
                 int index = picker.getValue();
                 uploadBitmap(b,albums.get(index).mediaAlbumId);
+                Log.d("photo","id :"+albums.get(index).mediaAlbumId);
             }
         });
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -588,7 +589,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Uploading Image...");
         pd.show();
 
-        Log.d("hq","uploading bitmap to server, albumID="+albumID);
+        Log.d("photo","albumID="+albumID);
         String fileName = "photo.png";
 
         File f = new File(this.getContext().getCacheDir(), fileName);

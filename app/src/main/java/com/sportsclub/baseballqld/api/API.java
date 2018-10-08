@@ -1,5 +1,7 @@
 package com.sportsclub.baseballqld.api;
 
+import android.net.Uri;
+
 import com.sportsclub.baseballqld.VideoAlbumResponse;
 import com.sportsclub.baseballqld.models.Article;
 import com.sportsclub.baseballqld.models.ArticleComment;
@@ -264,10 +266,10 @@ public interface API {
                                  Callback<Response> response);
 
     @Multipart
-    @POST("apiv2/media/postvideo/{albumID}")
+    @POST("/apiv2/media/postvideo/{albumID}")
     public void postVideoToAlbum(@Header("Authorization") String auth,
-                                 @Path("id") int mediaAlbumID,
-                                 @Part("videourl") TypedFile file,
+                                 @Path("albumID") int albumID,
+                                 @Part("videourl") Uri file,
                                  Callback<Response> response);
 
 
@@ -283,7 +285,7 @@ public interface API {
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/video/get/{groupID}")
-    public void getGroupingVideoAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
+    public void getGroupingVideoAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
 
     //new api v2
