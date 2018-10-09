@@ -11,12 +11,12 @@ public class VideoAlbum extends Video {
     public String name;
     public String createdBy;
     public String albumDescription;
-    public List<Media> mediaModels = new ArrayList<>();
+    public List<Video> mediaModels = new ArrayList<>();
     public String createdByAvatar;
     public String coverImage;
 
 
-    public void sortMediaAlbumsByDate()
+    /*public void sortMediaAlbumsByDate()
     {
         Collections.sort(this.mediaModels, new Comparator<Media>(){
             public int compare(Media emp1, Media emp2) {
@@ -29,5 +29,14 @@ public class VideoAlbum extends Video {
         });
 
 
+    }*/
+
+    public void sortVideoAlbumByDate() {
+        Collections.sort(this.mediaModels, new Comparator<Video>() {
+            @Override
+            public int compare(Video video, Video t1) {
+                return Integer.valueOf(video.videoId).compareTo(t1.videoId);
+            }
+        });
     }
 }

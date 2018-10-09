@@ -43,6 +43,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
@@ -71,6 +72,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
     private static final String TAG = "QLD";
 
     boolean isSelected;
+    Album albummodel;
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final String ALLOW_KEY = "ALLOWED";
@@ -197,22 +199,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                             }
                         });
 
-                        showiv.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View view) {
-                                if (album.mediaAlbumId == DM.member.memberId) {
-                                    Log.d(TAG, "memberID: " + DM.member.memberId);
-                                    Log.d(TAG, "mediaalbumID: " + album.mediaAlbumId);
-
-                                    Toast.makeText(getActivity(), "Delete album", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(getActivity(), "Cannot delete album", Toast.LENGTH_SHORT).show();
-                                }
-
-                                return true;
-                            }
-                        });
                     }
                 }
 
@@ -611,6 +597,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             TypedFile typedImage = new TypedFile("application/octet-stream", f);
             Log.d("HQ","Uploading image "+typedImage.file().length());
 
+
             DM.getApi().postImageToAlbum(DM.getAuthString(), albumID, typedImage, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
@@ -627,6 +614,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                     loadData();
                 }
             });
+
 
 
         } catch (IOException e) {

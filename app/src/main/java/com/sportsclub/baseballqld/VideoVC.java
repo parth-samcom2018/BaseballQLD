@@ -35,7 +35,6 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,19 +43,20 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sportsclub.baseballqld.models.Group;
-import com.sportsclub.baseballqld.models.MediaAlbum;
-import com.sportsclub.baseballqld.models.MediaAlbumResponse;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class VideoVC extends Fragment {
 
@@ -68,7 +68,7 @@ public class VideoVC extends Fragment {
 
     public Group group;
     //private List<MediaAlbum> albums = new Vector<MediaAlbum>();
-    private List<MediaAlbum> videoalbums = new Vector<MediaAlbum>();
+    private List<VideoAlbum> videoalbums = new Vector<VideoAlbum>();
 
     UploadTask uploadTask;
     private Uri videouri;
@@ -79,7 +79,6 @@ public class VideoVC extends Fragment {
     private ImageView emptyIV;
     private ProgressDialog pd;
     private ProgressBar progressBar;
-
 
 
     public VideoVC() {
@@ -116,7 +115,7 @@ public class VideoVC extends Fragment {
 
                 }
 
-                final MediaAlbum album = videoalbums.get(position);
+                final VideoAlbum album = videoalbums.get(position);
 
                 final TextView tv_media = convertView.findViewById(R.id.tv_video);
                 tv_media.setVisibility(View.VISIBLE);
@@ -143,10 +142,10 @@ public class VideoVC extends Fragment {
                         showiv.setClickable(false);
 
                     } else {
-                        p.load(album.coverImage)//.networkPolicy(NetworkPolicy.NO_CACHE)
+                        p.load(album.thumbnail)//.networkPolicy(NetworkPolicy.NO_CACHE)
                                 .placeholder(R.drawable.icon).into(showiv);
 
-                        p.load(album.coverImage).transform(new VideoVC.RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
+                        p.load(album.thumbnail).transform(new VideoVC.RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
                                 if (album.mediaModels == null) {
@@ -184,9 +183,10 @@ public class VideoVC extends Fragment {
                                     return;
                                 }*/
 
-                                Toast.makeText(getActivity(),"id:" + album.mediaAlbumId,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "id:" + album.mediaAlbumId, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "id:" + album.mediaAlbumId, Toast.LENGTH_SHORT).show();
 
-                                Log.d("hq","slider click!");
+                                Log.d("hq", "slider click!");
                                 //VideoGridVC.mediaAlbum = album;
                                 Intent i = new Intent(getActivity(), VideoGridVC.class);
                                 startActivity(i);
@@ -259,6 +259,12 @@ public class VideoVC extends Fragment {
             }
         });
 
+
+        Long tsLong = System.currentTimeMillis() / 1000;
+        String ts = tsLong.toString();
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        videoref = storageRef.child("/Videos/" + DM.member.memberId + "/" + ts + ".mp4");
 
         return v;
     }
@@ -367,11 +373,6 @@ public class VideoVC extends Fragment {
 
     private void uploadAction(final int albumID) {
 
-        Long tsLong = System.currentTimeMillis() / 1000;
-        String ts = tsLong.toString();
-
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        videoref = storageRef.child("/Videos/" + DM.member.memberId + "/" + ts + ".mp4");
 
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Uploading Video...");
         pd.show();
@@ -379,7 +380,7 @@ public class VideoVC extends Fragment {
         Log.d("video", "albumID=" + albumID);
 
         if (videouri != null) {
-            uploadTask = videoref.putFile(videouri);
+            UploadTask uploadTask = videoref.putFile(videouri);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -387,42 +388,64 @@ public class VideoVC extends Fragment {
                     Toast.makeText(getActivity(),
                             "Upload failed: " + e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
-
+                    pd.dismiss();
                 }
             }).addOnSuccessListener(
                     new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             Toast.makeText(getActivity(), "Upload complete",
                                     Toast.LENGTH_LONG).show();
-                            Log.d("video", "url:" + videouri);
-
+                            Log.d("video", ":" + videouri);
+                            Log.d("video", ":" + albumID);
+                            Log.d("video", ":" + videoref);
+                            Log.d("video", "memberID:" +  DM.member.memberId);
                             pd.dismiss();
 
-                            DM.getApi().postVideoToAlbum(DM.getAuthString(), albumID, videouri, new Callback<Response>() {
-                                @Override
-                                public void success(Response response, Response response2) {
-                                    Toast.makeText(getActivity(), "Successfully " + videouri, Toast.LENGTH_SHORT).show();
-                                }
 
+                            videoref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void failure(RetrofitError error) {
-                                    Toast.makeText(getActivity(), "Failed" + error, Toast.LENGTH_SHORT).show();
+                                public void onSuccess(final Uri uri) {
+                                    Toast.makeText(getActivity(), "" + uri, Toast.LENGTH_SHORT).show();
+                                    Log.d("video", "url:" + uri);
+
+
+                                    DM.getApi().postVideoToAlbum(DM.getAuthString(), albumID, uri, new Callback<Response>() {
+                                        @Override
+                                        public void success(Response response, Response response2) {
+                                            pd.dismiss();
+                                            Toast.makeText(getActivity(), "Successfully add to server", Toast.LENGTH_LONG).show();
+                                            loadData();
+                                            Log.d("video", "data:" + albumID);
+                                            Log.d("video", "data:" + uri);
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            pd.dismiss();
+                                            Toast.makeText(getActivity(), "" + error, Toast.LENGTH_LONG).show();
+                                            Log.d("error", ":" + error);
+                                            loadData();
+                                        }
+                                    });
                                 }
                             });
+
+
                         }
                     }).addOnProgressListener(
                     new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             updateProgress(taskSnapshot);
-                            progressBar.setVisibility(View.GONE);
+
                         }
                     });
         } else {
             Toast.makeText(getActivity(), "Nothing to upload",
                     Toast.LENGTH_LONG).show();
+            pd.dismiss();
+            loadData();
         }
     }
 
@@ -446,11 +469,11 @@ public class VideoVC extends Fragment {
 
         videouri = data.getData();
 
-        if (requestCode == REQUEST_PICK_VIDEO) {
+        if (requestCode == REQUEST_PICK_VIDEO || resultCode == REQUEST_PICK_VIDEO || requestCode == REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 Toast.makeText(getActivity(), "Video saved to:\n" +
                         videouri, Toast.LENGTH_LONG).show();
-
+                //videouri = data.getData();
                 groupSelection();
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Video recording cancelled.",
@@ -477,10 +500,8 @@ public class VideoVC extends Fragment {
 
         View v = this.getActivity().getLayoutInflater().inflate(R.layout.uploadvideo_dialog, null);
 
-        VideoView iv = v.findViewById(R.id.VideoView);
-        iv.setVideoURI(Uri.parse(String.valueOf(videouri)));
-        iv.requestFocus();
-        iv.start();
+        ImageView iv = v.findViewById(R.id.imageView);
+        iv.setImageBitmap(b);
 
         final NumberPicker picker = v.findViewById(R.id.numberPicker);
         picker.setMinValue(0);
@@ -512,9 +533,6 @@ public class VideoVC extends Fragment {
     }
 
 
-
-
-
     private boolean initialLoaded = false;
 
     public void loadIfUnloaded() {
@@ -527,21 +545,18 @@ public class VideoVC extends Fragment {
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Video Albums...");
         pd.show();
 
-
         if (group != null)
-            DM.getApi().getGroupingVideoAlbums(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
+            DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<VideoAlbumResponse>() {
                 @Override
-                public void success(MediaAlbumResponse mediaAlbums, Response response) {
+                public void success(VideoAlbumResponse mediaAlbums, Response response) {
                     videoalbums = mediaAlbums.getData();
-                    for (MediaAlbum a : videoalbums) {
-                        a.sortMediaAlbumsByDate();
+                    for (VideoAlbum a : videoalbums) {
+                        a.sortVideoAlbumByDate();
                     }
 
                     listAdapter.notifyDataSetChanged();
                     refreshLayout.setRefreshing(false);
                     pd.dismiss();
-
-                    Log.d("video", "albums: " + videoalbums.get(0).mediaAlbumId);
 
                     if (mediaAlbums.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
                     else emptyIV.setVisibility(View.GONE);
@@ -555,6 +570,7 @@ public class VideoVC extends Fragment {
 
                 }
             });
+
 
     }
 
