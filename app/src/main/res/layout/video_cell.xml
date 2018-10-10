@@ -21,18 +21,18 @@
 
 
         <ProgressBar
-            android:id="@+id/progressBar_video"
+            android:id="@+id/progressBar_media"
             android:indeterminateTintMode="src_atop"
             android:indeterminateTint="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:indeterminate="true"
             android:elevation="5dp"/>
 
         <TextView
-            android:id="@+id/tv_video"
+            android:id="@+id/tv_media"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -40,7 +40,7 @@
             android:text="Sports Club HQ"
             android:elevation="5dp"
             android:textColor="@color/colorPrimary"
-            android:layout_below="@+id/progressBar_video"
+            android:layout_below="@+id/progressBar_media"
             android:visibility="visible"/>
 
 
@@ -53,7 +53,6 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:background="@drawable/textshape"/>
-
 
         <TextView
             android:id="@+id/firstTV"
@@ -70,19 +69,10 @@
             android:gravity="center|left"
             android:text="Rugby National Now I have A really long adn big name" />
 
-        <ProgressBar
-            android:id="@+id/pbar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:max="100"
-            android:visibility="gone"
-            android:progressBackgroundTint="@color/black"
-            android:layout_alignParentBottom="true"
-            />
+
 
     </RelativeLayout>
+
 
     <Button
         android:id="@+id/flagButton"
@@ -99,6 +89,8 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:visibility="gone">
+
+
 
 
     </LinearLayout>

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.GroupResponse;
+import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -32,6 +33,7 @@ import retrofit.client.Response;
 
 public class VideoGridVC extends BaseVC {
 
+    public static MediaAlbum mediaAlbum;
     Group group;
     private GridView gridView;
     private ArrayAdapter<Event> gridAdapter;

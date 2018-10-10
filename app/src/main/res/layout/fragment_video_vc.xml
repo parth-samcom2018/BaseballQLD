@@ -84,14 +84,14 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swiperefresh"
+        android:id="@+id/swiperefresh_videos"
         android:layout_above="@+id/ll"
         android:layout_alignParentTop="true"
         >
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/list"
+            android:id="@+id/list_videos"
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 

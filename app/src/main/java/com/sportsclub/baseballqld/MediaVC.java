@@ -133,6 +133,8 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
 
                 final ImageView showiv = convertView.findViewById(R.id.iv);
 
+
+
                 if (showiv!=null || album.mediaModels!=null){
                     Picasso.Builder builder = new Picasso.Builder(MediaVC.this.getActivity());
                     builder.listener(new Picasso.Listener() {
@@ -212,7 +214,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(MediaVC.this.getActivity()));
 
-
+                Log.d("size", "photo:" + album.mediaModels.size());
 
                 return convertView;
             }

@@ -42,43 +42,47 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Group;
+import com.sportsclub.baseballqld.models.MediaAlbum;
+import com.sportsclub.baseballqld.models.MediaAlbumResponse;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.mime.TypedFile;
 
 public class VideoVC extends Fragment {
 
-    private static final String TAG = "QLD";
-    private static final int REQUEST_PICK_VIDEO = 101;
-    private static final int REQUEST_CODE = 101;
-
-    boolean isSelected;
-
-    public Group group;
-    //private List<MediaAlbum> albums = new Vector<MediaAlbum>();
-    private List<VideoAlbum> videoalbums = new Vector<VideoAlbum>();
-
-    UploadTask uploadTask;
     private Uri videouri;
     private StorageReference videoref;
+
+    static final int REQUEST_CODE = 1;
+    static final int REQUEST_PICK_VIDEO = 2;
+    private static final String TAG = "QLD";
+
+    boolean isSelected;
+    Album albummodel;
+
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    public static final String ALLOW_KEY = "ALLOWED";
+    public static final String CAMERA_PREF = "camera_pref";
+    public Group group;
+    private List<MediaAlbum> albums = new Vector<MediaAlbum>();
+    //private List<VideoAlbum> albums = new Vector<VideoAlbum>();
+
     private SwipeRefreshLayout refreshLayout;
     private ListView listView;
     private ArrayAdapter listAdapter;
     private ImageView emptyIV;
     private ProgressDialog pd;
-    private ProgressBar progressBar;
+    File photoFile = null;
 
 
     public VideoVC() {
@@ -98,9 +102,8 @@ public class VideoVC extends Fragment {
 
         emptyIV = v.findViewById(R.id.empty);
 
-        listView = v.findViewById(R.id.list);
+        listView = v.findViewById(R.id.list_videos);
         listView.setDivider(null);
-
 
         loadData();
 
@@ -111,22 +114,25 @@ public class VideoVC extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(VideoVC.this.getActivity()).inflate(R.layout.video_cell, parent, false);
+                    convertView = LayoutInflater.from(VideoVC.this.getActivity()).inflate(R.layout.media_cell, parent, false);
 
                 }
 
-                final VideoAlbum album = videoalbums.get(position);
+                final MediaAlbum album = albums.get(position);
+                //final VideoAlbum album = albums.get(position);
 
-                final TextView tv_media = convertView.findViewById(R.id.tv_video);
+
+                final TextView tv_media = convertView.findViewById(R.id.tv_media);
                 tv_media.setVisibility(View.VISIBLE);
 
-                progressBar = convertView.findViewById(R.id.progressBar_video);
-                progressBar.setVisibility(View.GONE);
+                final ProgressBar progressBar = convertView.findViewById(R.id.progressBar_media);
+                progressBar.setVisibility(View.VISIBLE);
 
                 final ImageView showiv = convertView.findViewById(R.id.iv);
 
 
-                if (showiv != null || album.mediaModels != null) {
+
+                if (showiv!=null || album.mediaModels!=null){
                     Picasso.Builder builder = new Picasso.Builder(VideoVC.this.getActivity());
                     builder.listener(new Picasso.Listener() {
                         @Override
@@ -137,15 +143,16 @@ public class VideoVC extends Fragment {
                     });
                     Picasso p = builder.build();
 
-                    if (showiv == null || album.mediaModels == null) {
+                    if (showiv==null || album.mediaModels==null){
                         showiv.setImageResource(R.drawable.icon);
                         showiv.setClickable(false);
 
-                    } else {
-                        p.load(album.thumbnail)//.networkPolicy(NetworkPolicy.NO_CACHE)
+                    }
+                    else {
+                        p.load(album.coverImage)//.networkPolicy(NetworkPolicy.NO_CACHE)
                                 .placeholder(R.drawable.icon).into(showiv);
 
-                        p.load(album.thumbnail).transform(new VideoVC.RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
+                        p.load(album.coverImage).transform(new RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
                                 if (album.mediaModels == null) {
@@ -178,63 +185,45 @@ public class VideoVC extends Fragment {
                         showiv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                /*if (showiv == null || album.videoModels == null || album.videoModels.size() == 0 || showiv.equals("0")) {
+                                if (showiv==null || album.mediaModels==null || album.mediaModels.size()==0 || showiv.equals("0")){
                                     Toast.makeText(VideoVC.this.getActivity(), "This album is empty! It will fill up only when you select album while upload any photos!", Toast.LENGTH_SHORT).show();
                                     return;
-                                }*/
+                                }
 
-                                Toast.makeText(getActivity(), "id:" + album.mediaAlbumId, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), "id:" + album.mediaAlbumId, Toast.LENGTH_SHORT).show();
-
-                                Log.d("hq", "slider click!");
-                                //VideoGridVC.mediaAlbum = album;
-                                Intent i = new Intent(getActivity(), VideoGridVC.class);
+                                Log.d("video","onclicks!");
+                                VideoDetailVC.mediaAlbum = album;
+                                Intent i = new Intent(getActivity(), VideoDetailVC.class);
                                 startActivity(i);
 
                             }
                         });
 
-                        showiv.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View view) {
-                                if (album.mediaAlbumId == DM.member.memberId) {
-                                    Log.d(TAG, "memberID: " + DM.member.memberId);
-                                    Log.d(TAG, "mediaalbumID: " + album.mediaAlbumId);
-
-                                    Toast.makeText(getActivity(), "Delete album", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getActivity(), "Cannot delete album", Toast.LENGTH_SHORT).show();
-                                }
-
-                                return true;
-                            }
-                        });
                     }
                 }
 
-
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
-                firstTV.setText(album.name + " \n" + album.mediaModels.size() + " videos");
+                firstTV.setText(album.name+" \n" +album.mediaModels.size()+" videos");
                 firstTV.setTextColor(getResources().getColor(R.color.white));
-                if (album.mediaModels.size() == 0) {
+                if (album.mediaModels.size()==0){
                     firstTV.setTextColor(getResources().getColor(R.color.black));
                     return convertView;
                 }
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(VideoVC.this.getActivity()));
 
+                Log.d("size", "video:" + album.mediaModels.size());
 
                 return convertView;
             }
 
             @Override
             public int getCount() {
-                return videoalbums.size();
+                return albums.size();
             }
         };
         listView.setAdapter(listAdapter);
 
-        refreshLayout = v.findViewById(R.id.swiperefresh);
+        refreshLayout = v.findViewById(R.id.swiperefresh_videos);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -336,7 +325,7 @@ public class VideoVC extends Fragment {
                         loadData();
                         Log.d("onSuccess", "response" + response);
                         Log.d("onSuccess", "response" + response2);
-                        Log.d("video", "id:" + videoalbums.get(0).mediaAlbumId);
+                        Log.d("video", "id:" + albums.get(0).mediaAlbumId);
                     }
 
                     @Override
@@ -399,7 +388,7 @@ public class VideoVC extends Fragment {
                             Log.d("video", ":" + videouri);
                             Log.d("video", ":" + albumID);
                             Log.d("video", ":" + videoref);
-                            Log.d("video", "memberID:" +  DM.member.memberId);
+                            Log.d("video", "memberID:" + DM.member.memberId);
                             pd.dismiss();
 
 
@@ -410,7 +399,7 @@ public class VideoVC extends Fragment {
                                     Log.d("video", "url:" + uri);
 
 
-                                    DM.getApi().postVideoToAlbum(DM.getAuthString(), albumID, uri, new Callback<Response>() {
+                                    DM.getApi().postVideoToAlbum(DM.getAuthString(), albumID, uri.toString(), new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
                                             pd.dismiss();
@@ -437,7 +426,7 @@ public class VideoVC extends Fragment {
                     new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            updateProgress(taskSnapshot);
+                            //updateProgress(taskSnapshot);
 
                         }
                     });
@@ -449,7 +438,7 @@ public class VideoVC extends Fragment {
         }
     }
 
-    public void updateProgress(UploadTask.TaskSnapshot taskSnapshot) {
+   /* public void updateProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
         @SuppressWarnings("VisibleForTests") long fileSize =
                 taskSnapshot.getTotalByteCount();
@@ -461,7 +450,7 @@ public class VideoVC extends Fragment {
 
         ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.pbar);
         progressBar.setProgress((int) progress);
-    }
+    }*/
 
 
     @Override
@@ -484,13 +473,18 @@ public class VideoVC extends Fragment {
             }
         }
 
+        if (videouri.getPath().isEmpty()) {
+            Toast.makeText(getActivity(), "Nothing is selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
     }
 
     private void groupSelection() {
 
         final Bitmap b = null;
 
-        if (videoalbums.size() == 0) {
+        if (albums.size() == 0) {
             Toast.makeText(this.getActivity(), "No albums loaded yet!!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -505,12 +499,12 @@ public class VideoVC extends Fragment {
 
         final NumberPicker picker = v.findViewById(R.id.numberPicker);
         picker.setMinValue(0);
-        picker.setMaxValue(videoalbums.size() - 1);
+        picker.setMaxValue(albums.size() - 1);
         picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //stops editing...
-        String[] sa = new String[videoalbums.size()];
-        for (int i = 0; i < videoalbums.size(); i++) {
-            sa[i] = videoalbums.get(i).name;
-            Log.d("video", "album id:" + videoalbums.get(i).mediaAlbumId);
+        String[] sa = new String[albums.size()];
+        for (int i = 0; i < albums.size(); i++) {
+            sa[i] = albums.get(i).name;
+            Log.d("video", "album id:" + albums.get(i).mediaAlbumId);
         }
         picker.setDisplayedValues(sa);
 
@@ -519,8 +513,8 @@ public class VideoVC extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int index = picker.getValue();
-                uploadAction(videoalbums.get(index).mediaAlbumId);
-                Log.d("video", "id:" + videoalbums.get(index).mediaAlbumId);
+                uploadAction(albums.get(index).mediaAlbumId);
+                Log.d("video", "id:" + albums.get(index).mediaAlbumId);
             }
         });
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -545,32 +539,31 @@ public class VideoVC extends Fragment {
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Video Albums...");
         pd.show();
 
-        if (group != null)
-            DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<VideoAlbumResponse>() {
-                @Override
-                public void success(VideoAlbumResponse mediaAlbums, Response response) {
-                    videoalbums = mediaAlbums.getData();
-                    for (VideoAlbum a : videoalbums) {
-                        a.sortVideoAlbumByDate();
-                    }
-
-                    listAdapter.notifyDataSetChanged();
-                    refreshLayout.setRefreshing(false);
-                    pd.dismiss();
-
-                    if (mediaAlbums.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
-                    else emptyIV.setVisibility(View.GONE);
-
+        if(group != null) DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
+            @Override
+            public void success(MediaAlbumResponse mediaAlbums, Response response) {
+                albums = mediaAlbums.getData();
+                for(MediaAlbum a : albums)
+                {
+                    a.sortMediaAlbumsByDate();
                 }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    pd.dismiss();
-                    refreshLayout.setRefreshing(false);
+                listAdapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+                pd.dismiss();
 
-                }
-            });
+                if(mediaAlbums.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
+                else emptyIV.setVisibility(View.GONE);
 
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                pd.dismiss();
+                refreshLayout.setRefreshing(false);
+
+            }
+        });
 
     }
 

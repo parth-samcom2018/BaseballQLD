@@ -268,11 +268,11 @@ public interface API {
                                  @Part("image") TypedFile file,
                                  Callback<Response> response);
 
-    @Multipart
-    @POST("/apiv2/media/postvideo/{albumID}")
+    @FormUrlEncoded
+    @POST("/apiv2/media/postvideo")
     public void postVideoToAlbum(@Header("Authorization") String auth,
-                                 @Path("albumID") int mediaAlbumID,
-                                 @Part("videourl") Uri url,
+                                 @Field("mediaAlbumId") int mediaAlbumID,
+                                 @Field("videourl") String url,
                                  Callback<Response> callback);
 
     //new api v2
@@ -280,7 +280,7 @@ public interface API {
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/video/get/{groupID}")
-    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
+    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
 
     //new api v2

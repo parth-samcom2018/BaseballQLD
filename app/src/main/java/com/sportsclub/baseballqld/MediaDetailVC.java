@@ -45,6 +45,7 @@ import retrofit.client.Response;
 
 public class MediaDetailVC extends BaseVC {
 
+    private static final String TAG = "QLD";
     public static MediaAlbum mediaAlbum;
     public static int selectedMediaId;
 
@@ -484,6 +485,8 @@ public class MediaDetailVC extends BaseVC {
                 refreshLayout.setRefreshing(false);
             }
         });
+
+        Log.d(TAG, "mediaAlbumID:" + mediaAlbum.mediaAlbumId);
     }
 
     @Override
