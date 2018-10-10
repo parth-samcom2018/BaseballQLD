@@ -225,12 +225,14 @@ public interface API {
     @GET("/api/media/album/{id}")
     public void getMediaAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
 
-    @GET("/apiv2/video/album/{id}")
-    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
 
     //new api v2
     @GET("/apiv2/media/album/{id}")
     public void getMediaAlbums(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbumResponse> response);
+
+
+    @GET("/apiv2/video/album/{id}")
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
 
 
     @FormUrlEncoded

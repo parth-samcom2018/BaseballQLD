@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/small_pad">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="top"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="@dimen/user_image_width"
+                android:layout_height="@dimen/user_image_width"
+                android:id="@+id/imageView"
+                android:src="@drawable/logo_log_in"
+                app:civ_border_width="0dp"
+                android:layout_margin="5dp"
+                app:civ_border_color="#FF000000"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/user_image_width"
+                android:id="@+id/usernameTV"
+                style="@style/textview_small"
+                android:gravity="center"
+                android:minLines="1"
+                android:textSize="12sp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/lato_regular"
+                android:text="Rugby National Now I have A really long adn big name" />
+        </LinearLayout>
+
+        <!-- first Row-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="0dp"
+                android:id="@+id/linear_second">
+
+                <TextView
+                    android:id="@+id/firstTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="First Row of text"
+                    android:layout_weight="1"
+                    style="@style/textview_small"
+                    android:layout_marginLeft="15dp"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:fontFamily="@font/lato_regular"
+                    android:gravity="center_vertical" />
+
+                <Button
+                    android:id="@+id/flagButton"
+                    android:layout_width="@dimen/flag_button_width"
+                    android:layout_height="@dimen/flag_button_width"
+                    android:background="@drawable/flag"
+                    android:elevation="10dp"
+                    android:layout_margin="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp">
+
+
+                <RelativeLayout
+                    android:layout_weight="2.8"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/relativelayout"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:elevation="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/notice_shape"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/bodyIV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/splashlogo"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/secondTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Sports Club HQ"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/white" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_weight="0.1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/gray"
+                    android:layout_toRightOf="@+id/bodyIV"
+                    android:layout_gravity="center|right"
+                    android:textSize="14sp"
+                    android:layout_margin="5dp"
+                    />
+
+            </LinearLayout>
+
+            <!-- Third Row -->
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"
+                android:id="@+id/thirdTV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Third row of text"
+                style="@style/textview_small"
+                android:singleLine="true"
+                android:gravity="bottom|left"
+                android:textSize="12sp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/lato_regular"
+                android:layout_gravity="bottom|left"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

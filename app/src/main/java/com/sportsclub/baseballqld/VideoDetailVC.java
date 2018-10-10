@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -238,13 +239,14 @@ public class VideoDetailVC extends BaseVC {
 
         videoView = findViewById(R.id.videoview_details);
 
-        /*videoPathUrl = mediaAlbum.mediaModels.get(0).url;
-        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(videoPathUrl, MediaStore.Video.Thumbnails.MICRO_KIND);
-        videoView.setBackgroundResource(R.drawable.icon);*/
 
+        MediaController mediaController = new MediaController(this);
         videoView.setVideoURI(Uri.parse(mediaAlbum.mediaModels.get(0).url));
 
         videoView.seekTo(100);
+
+        videoView.setMediaController(mediaController);
+
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {

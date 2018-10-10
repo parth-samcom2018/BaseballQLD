@@ -48,6 +48,7 @@ import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.Notification;
 import com.sportsclub.baseballqld.models.NotificationResponse;
 import com.sportsclub.baseballqld.views.TextPoster;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -73,7 +74,7 @@ public class NoticeboardFragment extends Fragment {
     private ListView listView;
     private ArrayAdapter listAdapter;
     private TextPoster textPoster;
-    private ImageView emptyIV, userIV, iv;
+    private ImageView emptyIV, userIV, iv,iv_video;
     private Button flagButton;
     Dialog dialog;
 
@@ -263,8 +264,53 @@ public class NoticeboardFragment extends Fragment {
 
                 final Notification n = notifications.get(position);
 
+                if (n.notificationTypeId == Notification.TYPE_VIDEO) {
+                    convertView = LayoutInflater.from(NoticeboardFragment.this.getContext()).inflate(R.layout.main_video_cell, parent, false);
+
+                    iv = convertView.findViewById(R.id.bodyIV);
+
+
+                    final TextView tv = convertView.findViewById(R.id.secondTV);
+                    tv.setText("has Added a Video");
+                    tv.setTextColor(Color.WHITE);
+
+
+                    //  iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                    if (iv != null && n.thumbnailUrl != null) {
+
+                        Log.d("video", "thumb url:" + n.thumbnailUrl);
+                        //   Picasso.with(NoticeboardFragment.this.getContext()).load(n.thumbnailUrl).into(iv);
+
+
+                        Picasso.Builder builder = new Picasso.Builder(NoticeboardFragment.this.getContext());
+                        builder.listener(new Picasso.Listener() {
+                            @Override
+                            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                                Log.d("video", "uri: " + uri.getPath());
+                                exception.printStackTrace();
+                            }
+                        });
+
+                        try {
+                            Picasso p = builder.build();
+                            //p.load(n.thumbnailUrl).networkPolicy(NetworkPolicy.NO_CACHE).into(iv);
+                            //Picasso.with(getActivity()).load(n.thumbnailUrl).transform(new RoundedCornersTransform()).into(iv);
+                            p.load(n.thumbnailUrl).placeholder(R.drawable.logo_log_in).transform(new RoundedCornersTransform()).into(iv);
+                        } catch (IllegalArgumentException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    Button flagButton = convertView.findViewById(R.id.flagButton);
+                    flagButton.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+
+
+                }
+
                 //Text or image...
-                if (n.notificationTypeId == Notification.TYPE_MEDIA) {
+                else if (n.notificationTypeId == Notification.TYPE_MEDIA) {
                     convertView = LayoutInflater.from(NoticeboardFragment.this.getContext()).inflate(R.layout.main_image_cell, parent, false);
 
                     iv = convertView.findViewById(R.id.bodyIV);
@@ -395,6 +441,9 @@ public class NoticeboardFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
+                        if (n.notificationTypeId == Notification.TYPE_VIDEO) {
+                            Toast.makeText(getActivity(), "this is video" + Notification.TYPE_VIDEO,Toast.LENGTH_LONG).show();
+                        }
 
                         if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {
 

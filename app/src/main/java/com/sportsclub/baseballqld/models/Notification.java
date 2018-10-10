@@ -30,6 +30,7 @@ public class Notification {
     public static final int TYPE_ARTICLE = 2;
     public static  final int TYPE_MEDIA = 3;
     public static final int TYPE_NOTIFICATION = 4;
+    public static final int TYPE_VIDEO = 5;
 
     public String getTimeAgo()
     {

@@ -46,6 +46,7 @@ import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
+import com.sportsclub.baseballqld.models.Notification;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -121,7 +122,6 @@ public class VideoVC extends Fragment {
                 final MediaAlbum album = albums.get(position);
                 //final VideoAlbum album = albums.get(position);
 
-
                 final TextView tv_media = convertView.findViewById(R.id.tv_media);
                 tv_media.setVisibility(View.VISIBLE);
 
@@ -149,10 +149,10 @@ public class VideoVC extends Fragment {
 
                     }
                     else {
-                        p.load(album.coverImage)//.networkPolicy(NetworkPolicy.NO_CACHE)
+                        p.load(album.url)//.networkPolicy(NetworkPolicy.NO_CACHE)
                                 .placeholder(R.drawable.icon).into(showiv);
 
-                        p.load(album.coverImage).transform(new RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
+                        p.load(album.url).transform(new RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
                                 if (album.mediaModels == null) {
