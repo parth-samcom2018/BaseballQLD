@@ -167,8 +167,10 @@ public class EventCommentsVC extends Fragment {
 
                         tvdata.setText("" + ec.comment);
 
-                        Log.d(TAG, "memberID: " + DM.member.memberId);
-                        Log.d(TAG, "eventCommentID: " + ec.eventCommentId);
+                        Log.d("event","memberID:" + DM.member.memberId);
+                        Log.d("event","eventmemberID:" + ec.memberId);
+                        Log.d("event","eventcommentID:" + ec.eventCommentId);
+
 
 
                         Button btn_no = dialog.findViewById(R.id.btn_no);
@@ -185,27 +187,27 @@ public class EventCommentsVC extends Fragment {
                             @Override
                             public void onClick(View view) {
 
-                                if (DM.member.memberId == ec.eventCommentId) {
+                                if (DM.member.memberId == ec.memberId) {
                                     String auth = DM.getAuthString();
 
-                                    DM.getApi().eventCommentdelete(auth, ec.eventCommentId, new Callback<Response>() {
+                                    DM.getApi().eventCommentDelete(auth, ec.eventCommentId, new Callback<Response>() {
                                         @Override
                                         public void success(Response response, Response response2) {
-                                            Toast.makeText(getActivity(), "Delete Notification", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Delete Comments", Toast.LENGTH_SHORT).show();
                                             refreshEvent();
                                             refreshLayout.setRefreshing(true);
                                         }
 
                                         @Override
                                         public void failure(RetrofitError error) {
-                                            Toast.makeText(getActivity(), "Cannot", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Cannot delete this comment", Toast.LENGTH_SHORT).show();
                                             refreshEvent();
                                             refreshLayout.setRefreshing(true);
                                         }
                                     });
                                 }
                                 else {
-                                    Toast.makeText(getActivity(), "You are authorized to delete this notification!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "You are authorized to delete this comments!!", Toast.LENGTH_SHORT).show();
                                 }
 
 

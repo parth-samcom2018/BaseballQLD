@@ -467,14 +467,17 @@ public class VideoVC extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        videouri = data.getData();
 
         if (requestCode == REQUEST_PICK_VIDEO || resultCode == REQUEST_PICK_VIDEO || requestCode == REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 Toast.makeText(getActivity(), "Video saved to:\n" +
                         videouri, Toast.LENGTH_LONG).show();
-                //videouri = data.getData();
-                groupSelection();
+                videouri = data.getData();
+
+                if (!videouri.getPath().isEmpty()) {
+                    groupSelection();
+                    return;
+                }
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Video recording cancelled.",
                         Toast.LENGTH_LONG).show();
@@ -483,6 +486,7 @@ public class VideoVC extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         }
+
 
         if (videouri.getPath().isEmpty()) {
             Toast.makeText(getActivity(), "Nothing is selected", Toast.LENGTH_SHORT).show();
@@ -543,6 +547,8 @@ public class VideoVC extends Fragment {
     public void loadIfUnloaded() {
         if (initialLoaded == false) loadData();
     }
+
+
 
     private void loadData() {
         initialLoaded = true;

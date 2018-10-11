@@ -154,6 +154,12 @@ public interface API {
                                   Callback<Response> callback);
 
 
+
+    @DELETE("/apiv2/events/comment/delete/{eventcommentID}")
+    public void eventCommentDelete(@Header("Authorization") String auth,
+                                   @Path("eventcommentID") int eventcommentID,
+                                   Callback<Response> callback);
+
     @FormUrlEncoded
     @POST("/apiv2/media/album")
     public void postMediaAlbum(@Header("Authorization") String auth,
@@ -338,10 +344,7 @@ public interface API {
                                    @Path("mediacommentid") int mediacommentid,
                                    Callback<Response> callback);
 
-    @DELETE("/apiv2/media/comment/delete/{eventCommentId}")
-    public void eventCommentdelete(@Header("Authorization") String auth,
-                                   @Path("eventCommentId") int eventCommentId,
-                                   Callback<Response> callback);
+
 
     @DELETE("/apiv2/articles/delete/{articleid}")
     public void articleDelete(@Header("Authorization") String auth,

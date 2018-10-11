@@ -92,6 +92,7 @@ public class NotificationVC extends BaseVC {
                 textPoster.clearText();
                 refreshNotification();
                 pd.dismiss();
+                refreshLayout.setRefreshing(true);
 
                 Log.d(TAG, "data: ");
 
@@ -215,6 +216,9 @@ public class NotificationVC extends BaseVC {
                         TextView tvdata = dialog.findViewById(R.id.tvData);
 
                         tvdata.setText("" + c.comment);
+
+                        Log.d(TAG, "memberID: " + DM.member.memberId);
+                        Log.d(TAG, "NotifyId: " + c.memberId);
 
                         Button btn_no = dialog.findViewById(R.id.btn_no);
                         btn_no.setOnClickListener(new View.OnClickListener() {
