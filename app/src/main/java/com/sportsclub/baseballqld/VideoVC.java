@@ -126,7 +126,7 @@ public class VideoVC extends Fragment {
                 tv_media.setVisibility(View.VISIBLE);
 
                 final ProgressBar progressBar = convertView.findViewById(R.id.progressBar_media);
-                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
 
                 final ImageView showiv = convertView.findViewById(R.id.iv);
 
@@ -149,10 +149,10 @@ public class VideoVC extends Fragment {
 
                     }
                     else {
-                        p.load(album.url)//.networkPolicy(NetworkPolicy.NO_CACHE)
+                        p.load(album.thumbnail)//.networkPolicy(NetworkPolicy.NO_CACHE)
                                 .placeholder(R.drawable.icon).into(showiv);
 
-                        p.load(album.url).transform(new RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
+                        p.load(album.thumbnail).transform(new RoundedCornersTransform()).into(showiv, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
                                 if (album.mediaModels == null) {
@@ -182,6 +182,15 @@ public class VideoVC extends Fragment {
                             }
                         });
 
+                        Log.d("video","thumbnail:" + album.thumbnail);
+
+                        if (album.thumbnail == null || album.thumbnail.isEmpty()) {
+                            showiv.setImageResource(R.drawable.splashlogo);
+                            showiv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+                            tv_media.setVisibility(View.GONE);
+                        }
+
                         showiv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -191,8 +200,9 @@ public class VideoVC extends Fragment {
                                 }
 
                                 Log.d("video","onclicks!");
-                                VideoDetailVC.mediaAlbum = album;
-                                Intent i = new Intent(getActivity(), VideoDetailVC.class);
+                                //VideoDetailVC.mediaAlbum = album;
+                                VideoGridVC.mediaAlbum = album;
+                                Intent i = new Intent(getActivity(), VideoGridVC.class);
                                 startActivity(i);
 
                             }
@@ -203,15 +213,16 @@ public class VideoVC extends Fragment {
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
                 firstTV.setText(album.name+" \n" +album.mediaModels.size()+" videos");
-                firstTV.setTextColor(getResources().getColor(R.color.white));
+                firstTV.setTextColor(getResources().getColor(R.color.black));
                 if (album.mediaModels.size()==0){
-                    firstTV.setTextColor(getResources().getColor(R.color.black));
+                    firstTV.setTextColor(getResources().getColor(R.color.white));
                     return convertView;
                 }
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(VideoVC.this.getActivity()));
 
                 Log.d("size", "video:" + album.mediaModels.size());
+                Log.d("video","mediamodel: " + album.mediaModels.size());
 
                 return convertView;
             }

@@ -495,7 +495,9 @@ public class NoticeBoardVCN extends Fragment {
                     public void onClick(View v) {
 
                         if (n.notificationTypeId == Notification.TYPE_VIDEO) {
-                            Toast.makeText(getActivity(), "this is video" + Notification.TYPE_VIDEO,Toast.LENGTH_LONG).show();
+                            NotificationVC.notification = n;
+                            Intent i = new Intent(NoticeBoardVCN.this.getActivity(), VideoDetailVC.class);
+                            startActivity(i);
                         }
 
                         if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {

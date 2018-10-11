@@ -130,6 +130,8 @@ public interface API {
     //here is the other url part.best way is to start using /
     public void getAllGrouping(@Header("Authorization") String auth, Callback<GroupResponse> response);
 
+
+
     @GET("/apiv2/ladders/{groupID}")
     public void getLadders(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<LaddersResponse> response);
 
@@ -225,14 +227,13 @@ public interface API {
     @GET("/api/media/album/{id}")
     public void getMediaAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
 
-
     //new api v2
     @GET("/apiv2/media/album/{id}")
     public void getMediaAlbums(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbumResponse> response);
 
 
     @GET("/apiv2/video/album/{id}")
-    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
 
 
     @FormUrlEncoded

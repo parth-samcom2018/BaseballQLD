@@ -37,9 +37,8 @@ public class VideoGridVC extends BaseVC {
     Group group;
     private GridView gridView;
     private ArrayAdapter<Event> gridAdapter;
-    private ImageView emptyIV;
-
     private SwipeRefreshLayout refreshLayout;
+    private ImageView emptyIV;
 
     private List<Group> groups = new Vector<Group>();
 
@@ -61,19 +60,16 @@ public class VideoGridVC extends BaseVC {
         gridView = findViewById(R.id.list_video);
 
 
-        gridAdapter= new ArrayAdapter<Event>(this, R.layout.group_cell){
+        gridAdapter = new ArrayAdapter<Event>(VideoGridVC.this, R.layout.group_cell) {
 
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (convertView == null) {
-                    try
-                    {
+                    try {
                         convertView = LayoutInflater.from(VideoGridVC.this).inflate(R.layout.group_cell, parent, false);
-                    }
-
-                    catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
                 }
@@ -98,8 +94,7 @@ public class VideoGridVC extends BaseVC {
                     p.load(group.groupImage).placeholder(R.drawable.group_first).into(myImageView);//.networkPolicy(NetworkPolicy.NO_CACHE).
                     tv.setText(group.groupName);
 
-                }
-                catch (NullPointerException n){
+                } catch (NullPointerException n) {
                     n.printStackTrace();
                 }
 
@@ -117,11 +112,21 @@ public class VideoGridVC extends BaseVC {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                try {
+                    Group g = groups.get(position);
+                    GroupVC.group = g;
+                    Intent i = new Intent(VideoGridVC.this, GroupVC.class);
+                    startActivity(i);
+
+                    Log.d("Group", "id :" + g.groupId);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
 
-        refreshLayout = findViewById(R.id.swiperefresh_video);
+        refreshLayout = findViewById(R.id.swiperefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,7 +138,7 @@ public class VideoGridVC extends BaseVC {
 
     private void loadData() {
 
-        final ProgressDialog pd = DM.getPD(this,"Loading Videos...");
+        final ProgressDialog pd = DM.getPD(this, "Loading Videos...");
         pd.show();
 
         String auth = DM.getAuthString();
@@ -145,17 +150,19 @@ public class VideoGridVC extends BaseVC {
 
                 groups = gs.getData();
                 gridAdapter.notifyDataSetChanged();
-                pd.dismiss();
                 refreshLayout.setRefreshing(false);
-                if(gs.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
+                pd.dismiss();
+
+                if (gs.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
                 else emptyIV.setVisibility(View.GONE);
 
             }
 
             @Override
             public void failure(RetrofitError error) {
-                pd.dismiss();
                 refreshLayout.setRefreshing(false);
+                pd.dismiss();
+
             }
         });
     }
