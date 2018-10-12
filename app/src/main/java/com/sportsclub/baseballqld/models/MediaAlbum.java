@@ -36,7 +36,7 @@ public class MediaAlbum extends Media {
         Collections.sort(this.videoModels, new Comparator<Video>() {
             @Override
             public int compare(Video video, Video t1) {
-                return Integer.valueOf(video.videoId).compareTo(t1.videoId);
+                return Integer.valueOf(video.mediaId).compareTo(t1.mediaId);
             }
         });
     }*/

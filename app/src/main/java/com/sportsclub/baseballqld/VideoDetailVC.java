@@ -14,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,16 +33,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaComment;
+import com.sportsclub.baseballqld.models.Video;
+import com.sportsclub.baseballqld.models.VideoAlbum;
+import com.sportsclub.baseballqld.models.VideoComment;
 import com.sportsclub.baseballqld.views.TextPoster;
 import com.squareup.picasso.Picasso;
 
-import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -49,12 +54,13 @@ import retrofit.client.Response;
 public class VideoDetailVC extends BaseVC {
 
     private static final String TAG = "QLD";
-    public static MediaAlbum mediaAlbum;
+    //public static MediaAlbum mediaAlbum;
+    public static VideoAlbum mediaAlbum;
     public static int selectedMediaId;
 
-    private Media selectedMedia;
+    //private Media selectedMedia;
+    private Video selectedMedia;
     private MediaVC mediaVC;
-    String videoPathUrl;
 
     //VIEWS
     private ListView listView;
@@ -62,8 +68,7 @@ public class VideoDetailVC extends BaseVC {
     private SwipeRefreshLayout refreshLayout;
     private TextPoster textPoster;
     Dialog dialog;
-    //private SliderLayout slider;
-    private VideoView videoView;
+    private SliderLayout slider;
 
     //Header
     private TextView firstTV;
@@ -82,7 +87,6 @@ public class VideoDetailVC extends BaseVC {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mediaAlbum.sortMediaAlbumsByDate(); //sort by oldest last, since api is useless
-
         try {
             selectedMedia = mediaAlbum.mediaModels.get(0); //DEFAULT TO FIRST
         } catch (NullPointerException e) {
@@ -91,18 +95,25 @@ public class VideoDetailVC extends BaseVC {
         }
 
         if (selectedMediaId != 0) {
-            Log.d("videoDetails", "passed selected video media id:" + selectedMediaId);
+            Log.d("videodetails", "passed selected media id:" + selectedMediaId);
             //passed some media for selection
 
-            for (Media m : mediaAlbum.mediaModels) {
+            /*for (Media m : mediaAlbum.mediaModels) {
                 if (m.mediaId == selectedMediaId) {
 
-                    Log.d("videoDetails", "found selected video media:" + selectedMediaId);
+                    Log.d("videodetails", "found selected media:" + selectedMediaId);
+                    selectedMedia = m; //reference the model in the array
+                    break;
+                }
+            }*/
+            for (Video m : mediaAlbum.mediaModels) {
+                if (m.mediaId == selectedMediaId) {
+                    Log.d("videodetails", "found selected media:" + selectedMediaId);
                     selectedMedia = m; //reference the model in the array
                     break;
                 }
             }
-            Log.d("videoDetails", "passed to see video media:" + selectedMedia.url);
+            Log.d("videodetails", "passed to see media:" + selectedMedia.url);
         }
 
 
@@ -125,7 +136,9 @@ public class VideoDetailVC extends BaseVC {
                     convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.main_cell, parent, false);
                 }
 
-                final MediaComment mc = selectedMedia.comments.get(position);
+                //final MediaComment mc = selectedMedia.comments.get(position);
+                final VideoComment mc = selectedMedia.comments.get(position);
+
 
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
@@ -161,6 +174,7 @@ public class VideoDetailVC extends BaseVC {
                         TextView tvdata = dialog.findViewById(R.id.tvData);
 
                         tvdata.setText("" + mc.comment);
+
 
                         Button btn_no = dialog.findViewById(R.id.btn_no);
                         btn_no.setOnClickListener(new View.OnClickListener() {
@@ -234,49 +248,33 @@ public class VideoDetailVC extends BaseVC {
         secondTV = findViewById(R.id.secondTV);
         imageView = findViewById(R.id.imageView);
 
-        videoView = findViewById(R.id.videoview_details);
 
-
-        MediaController mediaController = new MediaController(this);
-        videoView.setVideoURI(Uri.parse(mediaAlbum.mediaModels.get(0).url));
-
-        videoView.seekTo(100);
-
-        videoView.setMediaController(mediaController);
-
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                videoView.start();
-                videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(VideoDetailVC.this, "Finish", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-
-
-        /*slider = findViewById(R.id.slider);
+        slider = findViewById(R.id.slider);
         slider.setDuration(10000);
         //   slider.setSliderTransformDuration(Integer.MAX_VALUE,null);
         slider.stopAutoCycle();
+
+
         slider.addOnPageChangeListener(new ViewPagerEx.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
+
             @Override
             public void onPageSelected(int position) {
+
                 selectedMedia = mediaAlbum.mediaModels.get(position);
-                Log.d("videoDetails", "on page selected changed video media!!!");
+                Log.d("videodetails", "on page selected changed media!!!");
                 listAdapter.notifyDataSetChanged();
+
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
-        });*/
+        });
     }
 
 
@@ -297,7 +295,8 @@ public class VideoDetailVC extends BaseVC {
 
         setTitle(mediaAlbum.name);
 
-        Media hackSelected = selectedMedia;
+        //Media hackSelected = selectedMedia;
+        Video hackSelected = selectedMedia;
 
         firstTV.setText(mediaAlbum.name);
         secondTV.setText("Uploaded By:\n" + mediaAlbum.createdBy);
@@ -309,8 +308,8 @@ public class VideoDetailVC extends BaseVC {
                 //.fetch();
                 .into(imageView);
 
-        //slider.removeAllSliders();
-        for (final Media m : mediaAlbum.mediaModels) {
+        slider.removeAllSliders();
+        for (final Video m : mediaAlbum.mediaModels) {
             //HACK needed becuase picasso does not take https
             m.url = DM.fromHTTPStoHTTP(m.url);
 
@@ -336,28 +335,54 @@ public class VideoDetailVC extends BaseVC {
 
                     AlertDialog.Builder b = new AlertDialog.Builder(VideoDetailVC.this);
 
-                    View v = getLayoutInflater().inflate(R.layout.image_dialog, null);
-                    ImageViewTouch iv = v.findViewById(R.id.imageView);
+                    View v = getLayoutInflater().inflate(R.layout.video_dialog, null);
+                    //ImageViewTouch iv = v.findViewById(R.id.imageView);
+                    final VideoView videoView = v.findViewById(R.id.video);
 
-                    Picasso p = Picasso.with(VideoDetailVC.this);
+                    /*Picasso p = Picasso.with(VideoDetailVC.this);
                     p.setIndicatorsEnabled(true);
                     p.load(m.url)
                             .placeholder(R.drawable.icon)
                             //.fetch();
-                            .into(iv);
+                            .into(iv);*/
+                    //videoView.setVideoURI(Uri.parse(m.url));
+                    MediaController mediaController = new MediaController(VideoDetailVC.this);
+                    videoView.setVideoURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/baseball-qld.appspot.com/o/Videos%2F120%2FOptional(%22120%22)1539175361.mp4?alt=media&token=95df206d-793d-46b9-adf6-f203ec254fef"));
+
+                    videoView.seekTo(100);
+
+                    videoView.setMediaController(mediaController);
+
+                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            videoView.start();
+                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mediaPlayer) {
+                                    Toast.makeText(VideoDetailVC.this, "Finish", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                     b.setView(v);
                     /*b.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
+
                             String auth = DM.getAuthString();
+
                             DM.getApi().deleteMediaItem(auth, m.mediaId, new Callback<Response>() {
                                 @Override
                                 public void success(Response response, Response response2) {
+
                                     Toast.makeText(VideoDetailVC.this, "Successfully deleted media item", Toast.LENGTH_SHORT).show();
                                     refreshLayout.setRefreshing(true);
                                     //startActivity(new Intent(VideoDetailVC.this, GroupVC.class));
                                     finish();
                                 }
+
                                 @Override
                                 public void failure(RetrofitError error) {
                                     Toast.makeText(VideoDetailVC.this, "Media item cannot be deleted", Toast.LENGTH_SHORT).show();
@@ -376,18 +401,20 @@ public class VideoDetailVC extends BaseVC {
 
                 }
             });
-            //slider.addSlider(textSliderView);
+            slider.addSlider(textSliderView);
         }
 
-        /*slider.setDuration(0);
-         *//*
+        slider.setDuration(0);
+                /*
                 mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
                 mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
                 mDemoSlider.setCustomAnimation(new DescriptionAnimation());
                 mDemoSlider.setDuration(4000);
-                *//*
+                */
+
+
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);*/
+        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 
 
         //removing and adding slides to the slider fucks everything up cause it calls on page scrolled event, use this hack to perserve selection
@@ -396,8 +423,8 @@ public class VideoDetailVC extends BaseVC {
         if (selectedMedia != null) {
             int index = 0;
             for (int i = 0; i < mediaAlbum.mediaModels.size(); i++) {
-                Media m = mediaAlbum.mediaModels.get(i);
-                Log.d("videoDetails", "searching video media:" + m.mediaId + " selected: " + selectedMedia.mediaId);
+                Video m = mediaAlbum.mediaModels.get(i);
+                Log.d("videodetails", "searching media:" + m.mediaId + " selected: " + selectedMedia.mediaId);
                 if (selectedMedia.mediaId == m.mediaId) {
                     index = i;
                     break;
@@ -405,9 +432,9 @@ public class VideoDetailVC extends BaseVC {
             }
 
 
-            Log.d("videoDetails", "selected slide index: " + index);
+            Log.d("videodetails", "selected slide index: " + index);
             try {
-                //slider.setCurrentPosition(index);
+                slider.setCurrentPosition(index);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -434,13 +461,16 @@ public class VideoDetailVC extends BaseVC {
         /*DM.getApi().postMediaComments(DM.getAuthString(), selectedMedia.mediaId, text, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
+
                 Toast.makeText(VideoDetailVC.this,"Comment Posted!",Toast.LENGTH_LONG).show();
                 textPoster.clearText();
                 refreshMedia();
                 pd.dismiss();
             }
+
             @Override
             public void failure(RetrofitError error) {
+
                 Toast.makeText(VideoDetailVC.this,"Comment failed "+error.getMessage(),Toast.LENGTH_LONG).show();
                 pd.dismiss();
             }
@@ -466,17 +496,17 @@ public class VideoDetailVC extends BaseVC {
     }
 
     private void refreshMedia() {
-        final ProgressDialog pd = DM.getPD(this, "Refreshing Video Media...");
+        final ProgressDialog pd = DM.getPD(this, "Refreshing Media...");
         pd.show();
 
 
-        DM.getApi().getMediaAlbum(DM.getAuthString(), mediaAlbum.mediaAlbumId, new Callback<MediaAlbum>() {
+        DM.getApi().getVideoAlbum(DM.getAuthString(), mediaAlbum.mediaAlbumId, new Callback<VideoAlbum>() {
             @Override
-            public void success(MediaAlbum ma, Response response) {
+            public void success(VideoAlbum ma, Response response) {
                 mediaAlbum = ma;
                 mediaAlbum.sortMediaAlbumsByDate();
 
-                for (Media m : ma.mediaModels) {
+                for (Video m : ma.mediaModels) {
                     if (selectedMedia.mediaId == m.mediaId) {
                         selectedMedia = m;
                         break;
@@ -522,6 +552,12 @@ public class VideoDetailVC extends BaseVC {
         String message = "Are you sure want to delete this item?";
         alert.setMessage(message);
         alert.setTitle("Delete Album image?");
+
+        Log.d("video", "memberid:" + DM.member.memberId);
+        Log.d("video", "albumID:" + selectedMedia.mediaId);
+        Log.d("video", "albumID:" + selectedMediaId);
+        Log.d("video", "id:" + mediaAlbum.mediaAlbumId);
+
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
@@ -575,7 +611,7 @@ public class VideoDetailVC extends BaseVC {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 String name = edittext.getText().toString();
-                Log.d("videoDetails", "update folder with name:" + name);
+                Log.d("videodetails", "update folder with name:" + name);
 
                 if (TextUtils.isEmpty(name)) {
                     Toast.makeText(VideoDetailVC.this, "Enter A name", Toast.LENGTH_LONG).show();
@@ -589,12 +625,16 @@ public class VideoDetailVC extends BaseVC {
                 /*DM.getApi().putMediaAlbum(DM.getAuthString(),name,mediaAlbum.albumDescription,mediaAlbum.mediaAlbumId, new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
+
                         Toast.makeText(VideoDetailVC.this, "Album Updated!", Toast.LENGTH_LONG).show();
                         modelToView();
                         DM.hideKeyboard(VideoDetailVC.this);
+
                     }
+
                     @Override
                     public void failure(RetrofitError error) {
+
                         Toast.makeText(VideoDetailVC.this, "Could not update album:"+error.getMessage(), Toast.LENGTH_LONG).show();
                         DM.hideKeyboard(VideoDetailVC.this);
                     }

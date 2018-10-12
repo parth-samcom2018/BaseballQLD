@@ -11,5 +11,5 @@ public class Video {
     public String caption;
     public Date dateAdded;
     public List<VideoComment> comments;
-    public int videoId;
+    public int mediaId;
 }

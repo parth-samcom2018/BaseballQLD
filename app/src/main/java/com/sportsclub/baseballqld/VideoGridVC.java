@@ -1,7 +1,6 @@
 package com.sportsclub.baseballqld;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.GroupResponse;
 import com.sportsclub.baseballqld.models.MediaAlbum;
+import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -33,7 +33,7 @@ import retrofit.client.Response;
 
 public class VideoGridVC extends BaseVC {
 
-    public static MediaAlbum mediaAlbum;
+    public static VideoAlbum mediaAlbum;
     Group group;
     private GridView gridView;
     private ArrayAdapter<Event> gridAdapter;
@@ -112,7 +112,7 @@ public class VideoGridVC extends BaseVC {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                try {
+                /*try {
                     Group g = groups.get(position);
                     GroupVC.group = g;
                     Intent i = new Intent(VideoGridVC.this, GroupVC.class);
@@ -121,7 +121,7 @@ public class VideoGridVC extends BaseVC {
                     Log.d("Group", "id :" + g.groupId);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         });

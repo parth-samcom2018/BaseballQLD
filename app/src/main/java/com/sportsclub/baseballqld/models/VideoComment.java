@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class VideoComment {
 
-    public int videoId;
-    public int videoCommentId;
+    public int mediaId;
+    public int mediaCommentId;
     public String comment;
     public int memberId;
     public String member;

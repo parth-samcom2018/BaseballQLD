@@ -239,7 +239,7 @@ public interface API {
 
 
     @GET("/apiv2/video/album/{id}")
-    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
 
 
     @FormUrlEncoded
@@ -289,7 +289,7 @@ public interface API {
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/video/get/{groupID}")
-    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
+    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
 
 
     //new api v2
@@ -343,6 +343,7 @@ public interface API {
     public void mediaCommentdelete(@Header("Authorization") String auth,
                                    @Path("mediacommentid") int mediacommentid,
                                    Callback<Response> callback);
+
 
 
 

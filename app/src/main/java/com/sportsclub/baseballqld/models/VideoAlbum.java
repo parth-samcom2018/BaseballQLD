@@ -16,13 +16,13 @@ public class VideoAlbum extends Video {
     public String coverImage;
 
 
-    public void sortVideoAlbumsByDate()
+    public void sortMediaAlbumsByDate()
     {
         Collections.sort(this.mediaModels, new Comparator<Video>(){
             public int compare(Video emp1, Video emp2) {
 
                 //descending ids = descending date, better to fix in api but oh well
-                return Integer.valueOf(emp2.videoId).compareTo(emp1.videoId); // To compare integer values
+                return Integer.valueOf(emp2.mediaId).compareTo(emp1.mediaId); // To compare integer values
 
 
             }
@@ -30,6 +30,5 @@ public class VideoAlbum extends Video {
 
 
     }
-
 
 }

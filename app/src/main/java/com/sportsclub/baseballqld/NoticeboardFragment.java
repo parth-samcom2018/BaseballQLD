@@ -297,6 +297,7 @@ public class NoticeboardFragment extends Fragment {
                             //p.load(n.thumbnailUrl).networkPolicy(NetworkPolicy.NO_CACHE).into(iv);
                             //Picasso.with(getActivity()).load(n.thumbnailUrl).transform(new RoundedCornersTransform()).into(iv);
                             p.load(n.thumbnailUrl).placeholder(R.drawable.logo_log_in).transform(new RoundedCornersTransform()).into(iv);
+                            iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         } catch (IllegalArgumentException e) {
                             e.printStackTrace();
                         }
@@ -343,6 +344,7 @@ public class NoticeboardFragment extends Fragment {
                             //p.load(n.thumbnailUrl).networkPolicy(NetworkPolicy.NO_CACHE).into(iv);
                             //Picasso.with(getActivity()).load(n.thumbnailUrl).transform(new RoundedCornersTransform()).into(iv);
                             p.load(n.thumbnailUrl).placeholder(R.drawable.logo_log_in).transform(new RoundedCornersTransform()).into(iv);
+
                         } catch (IllegalArgumentException e) {
                             e.printStackTrace();
                         }

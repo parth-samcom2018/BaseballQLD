@@ -285,7 +285,7 @@ public class MediaDetailVC extends BaseVC {
 
         Picasso p = Picasso.with(this);
         p.setIndicatorsEnabled(true);
-        p.load(mediaAlbum.createdByAvatar)
+        p.load(mediaAlbum.thumbnail)
                 .placeholder(R.drawable.icon)
                 //.fetch();
                 .into(imageView);

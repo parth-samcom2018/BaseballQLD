@@ -149,6 +149,7 @@
         <activity android:name=".VideoDetailVC"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity
             android:name=".MediaDetailVC"
             android:configChanges="orientation|screenSize"

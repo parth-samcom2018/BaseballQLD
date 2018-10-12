@@ -1,5 +1,6 @@
 package com.sportsclub.baseballqld;
 
+import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.Video;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 

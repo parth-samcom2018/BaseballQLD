@@ -44,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Group;
+import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
 import com.sportsclub.baseballqld.models.Notification;
@@ -75,8 +76,8 @@ public class VideoVC extends Fragment {
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
     public Group group;
-    private List<MediaAlbum> albums = new Vector<MediaAlbum>();
-    //private List<VideoAlbum> albums = new Vector<VideoAlbum>();
+    //private List<MediaAlbum> albums = new Vector<MediaAlbum>();
+    private List<VideoAlbum> albums = new Vector<VideoAlbum>();
 
     private SwipeRefreshLayout refreshLayout;
     private ListView listView;
@@ -115,12 +116,12 @@ public class VideoVC extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(VideoVC.this.getActivity()).inflate(R.layout.media_cell, parent, false);
+                    convertView = LayoutInflater.from(VideoVC.this.getActivity()).inflate(R.layout.video_cell, parent, false);
 
                 }
 
-                final MediaAlbum album = albums.get(position);
-                //final VideoAlbum album = albums.get(position);
+                //final MediaAlbum album = albums.get(position);
+                final VideoAlbum album = albums.get(position);
 
                 final TextView tv_media = convertView.findViewById(R.id.tv_media);
                 tv_media.setVisibility(View.VISIBLE);
@@ -177,7 +178,7 @@ public class VideoVC extends Fragment {
                                 tv_media.setVisibility(View.GONE);
                                 progressBar.setVisibility(View.GONE);
 
-                                showiv.setImageResource(R.drawable.splashlogo);
+                                showiv.setImageResource(R.drawable.video);
                                 showiv.setScaleType(ImageView.ScaleType.FIT_CENTER);
                             }
                         });
@@ -185,7 +186,7 @@ public class VideoVC extends Fragment {
                         Log.d("video","thumbnail:" + album.thumbnail);
 
                         if (album.thumbnail == null || album.thumbnail.isEmpty()) {
-                            showiv.setImageResource(R.drawable.splashlogo);
+                            showiv.setImageResource(R.drawable.video);
                             showiv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
                             tv_media.setVisibility(View.GONE);
@@ -200,9 +201,9 @@ public class VideoVC extends Fragment {
                                 }
 
                                 Log.d("video","onclicks!");
-                                //VideoDetailVC.mediaAlbum = album;
-                                VideoGridVC.mediaAlbum = album;
-                                Intent i = new Intent(getActivity(), VideoGridVC.class);
+                                VideoDetailVC.mediaAlbum = album;
+                                //VideoGridVC.mediaAlbum = album;
+                                Intent i = new Intent(getActivity(), VideoDetailVC.class);
                                 startActivity(i);
 
                             }
@@ -221,8 +222,8 @@ public class VideoVC extends Fragment {
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(VideoVC.this.getActivity()));
 
-                Log.d("size", "video:" + album.mediaModels.size());
                 Log.d("video","mediamodel: " + album.mediaModels.size());
+                Log.d("video","url: " + album.url);
 
                 return convertView;
             }
@@ -556,13 +557,15 @@ public class VideoVC extends Fragment {
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Video Albums...");
         pd.show();
 
-        if(group != null) DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
+        if(group != null) DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<VideoAlbumResponse>() {
             @Override
-            public void success(MediaAlbumResponse mediaAlbums, Response response) {
+            public void success(VideoAlbumResponse mediaAlbums, Response response) {
                 albums = mediaAlbums.getData();
-                for(MediaAlbum a : albums)
+                for(VideoAlbum a : albums)
                 {
                     a.sortMediaAlbumsByDate();
+                    Log.d("video", "firebase:" + a.mediaModels.size());
+                    Log.d("video", "firebase:" + albums.size());
                 }
 
                 listAdapter.notifyDataSetChanged();
@@ -571,6 +574,7 @@ public class VideoVC extends Fragment {
 
                 if(mediaAlbums.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
                 else emptyIV.setVisibility(View.GONE);
+
 
             }
 
