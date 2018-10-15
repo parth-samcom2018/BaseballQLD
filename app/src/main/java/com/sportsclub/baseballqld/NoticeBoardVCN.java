@@ -300,7 +300,7 @@ public class NoticeBoardVCN extends Fragment {
 
                     if (iv != null && n.thumbnailUrl != null) {
 
-                        Log.d("video", "thumb url:" + n.thumbnailUrl);
+                        Log.d("video", "thumbnail url:" + n.thumbnailUrl);
                         //   Picasso.with(NoticeboardFragment.this.getContext()).load(n.thumbnailUrl).into(iv);
 
 
@@ -347,7 +347,7 @@ public class NoticeBoardVCN extends Fragment {
 
                     if (iv != null && n.thumbnailUrl != null) {
 
-                        Log.d("hq", "thumb url:" + n.thumbnailUrl);
+                        Log.d("hq", "thumbnail url:" + n.thumbnailUrl);
                         //   Picasso.with(NoticeBoardVC.this.getContext()).load(n.thumbnailUrl).into(iv);
 
 
@@ -496,7 +496,7 @@ public class NoticeBoardVCN extends Fragment {
                     public void onClick(View v) {
 
                         if (n.notificationTypeId == Notification.TYPE_VIDEO) {
-                            NotificationVC.notification = n;
+                            //NotificationVC.notification = n;
                             Intent i = new Intent(NoticeBoardVCN.this.getActivity(), VideoDetailVC.class);
                             startActivity(i);
                         }

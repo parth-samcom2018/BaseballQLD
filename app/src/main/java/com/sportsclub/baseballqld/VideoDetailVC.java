@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,9 +39,7 @@ import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaComment;
-import com.sportsclub.baseballqld.models.Video;
 import com.sportsclub.baseballqld.models.VideoAlbum;
-import com.sportsclub.baseballqld.models.VideoComment;
 import com.sportsclub.baseballqld.views.TextPoster;
 import com.squareup.picasso.Picasso;
 
@@ -58,8 +54,8 @@ public class VideoDetailVC extends BaseVC {
     public static VideoAlbum mediaAlbum;
     public static int selectedMediaId;
 
-    //private Media selectedMedia;
-    private Video selectedMedia;
+    private Media selectedMedia;
+    //private Video selectedMedia;
     private MediaVC mediaVC;
 
     //VIEWS
@@ -74,7 +70,8 @@ public class VideoDetailVC extends BaseVC {
     private TextView firstTV;
     private TextView secondTV;
     private ImageView imageView;
-    private Toolbar toolbars;
+    private VideoView videoView;
+    private MediaController mediaController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,21 +95,21 @@ public class VideoDetailVC extends BaseVC {
             Log.d("videodetails", "passed selected media id:" + selectedMediaId);
             //passed some media for selection
 
-            /*for (Media m : mediaAlbum.mediaModels) {
+            for (Media m : mediaAlbum.mediaModels) {
                 if (m.mediaId == selectedMediaId) {
 
                     Log.d("videodetails", "found selected media:" + selectedMediaId);
                     selectedMedia = m; //reference the model in the array
                     break;
                 }
-            }*/
-            for (Video m : mediaAlbum.mediaModels) {
+            }
+            /*for (Video m : mediaAlbum.mediaModels) {
                 if (m.mediaId == selectedMediaId) {
                     Log.d("videodetails", "found selected media:" + selectedMediaId);
                     selectedMedia = m; //reference the model in the array
                     break;
                 }
-            }
+            }*/
             Log.d("videodetails", "passed to see media:" + selectedMedia.url);
         }
 
@@ -136,9 +133,8 @@ public class VideoDetailVC extends BaseVC {
                     convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.main_cell, parent, false);
                 }
 
-                //final MediaComment mc = selectedMedia.comments.get(position);
-                final VideoComment mc = selectedMedia.comments.get(position);
-
+                final MediaComment mc = selectedMedia.comments.get(position);
+                //final VideoComment mc = selectedMedia.comments.get(position);
 
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
@@ -248,6 +244,8 @@ public class VideoDetailVC extends BaseVC {
         secondTV = findViewById(R.id.secondTV);
         imageView = findViewById(R.id.imageView);
 
+        videoView = findViewById(R.id.videoview_details);
+
 
         slider = findViewById(R.id.slider);
         slider.setDuration(10000);
@@ -295,8 +293,8 @@ public class VideoDetailVC extends BaseVC {
 
         setTitle(mediaAlbum.name);
 
-        //Media hackSelected = selectedMedia;
-        Video hackSelected = selectedMedia;
+        Media hackSelected = selectedMedia;
+        //Video hackSelected = selectedMedia;
 
         firstTV.setText(mediaAlbum.name);
         secondTV.setText("Uploaded By:\n" + mediaAlbum.createdBy);
@@ -309,7 +307,7 @@ public class VideoDetailVC extends BaseVC {
                 .into(imageView);
 
         slider.removeAllSliders();
-        for (final Video m : mediaAlbum.mediaModels) {
+        for (final Media m : mediaAlbum.mediaModels) {
             //HACK needed becuase picasso does not take https
             m.url = DM.fromHTTPStoHTTP(m.url);
 
@@ -318,7 +316,8 @@ public class VideoDetailVC extends BaseVC {
             // initialize a SliderLayout
             textSliderView
                     //  .description("desc")
-                    .image(m.url)
+                    //.image(m.url)
+                    .image(R.drawable.video)
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop);
             //.setOnSliderClickListener(this);
 
@@ -333,40 +332,32 @@ public class VideoDetailVC extends BaseVC {
                 @Override
                 public void onSliderClick(BaseSliderView slider) {
 
-                    AlertDialog.Builder b = new AlertDialog.Builder(VideoDetailVC.this);
+                    /*AlertDialog.Builder b = new AlertDialog.Builder(VideoDetailVC.this);
 
                     View v = getLayoutInflater().inflate(R.layout.video_dialog, null);
                     //ImageViewTouch iv = v.findViewById(R.id.imageView);
                     final VideoView videoView = v.findViewById(R.id.video);
 
-                    /*Picasso p = Picasso.with(VideoDetailVC.this);
-                    p.setIndicatorsEnabled(true);
-                    p.load(m.url)
-                            .placeholder(R.drawable.icon)
-                            //.fetch();
-                            .into(iv);*/
-                    //videoView.setVideoURI(Uri.parse(m.url));
-                    MediaController mediaController = new MediaController(VideoDetailVC.this);
-                    videoView.setVideoURI(Uri.parse("https://firebasestorage.googleapis.com/v0/b/baseball-qld.appspot.com/o/Videos%2F120%2FOptional(%22120%22)1539175361.mp4?alt=media&token=95df206d-793d-46b9-adf6-f203ec254fef"));
 
-                    videoView.seekTo(100);
+                    String fullScreen = getIntent().getStringExtra("fullScreenInd");
+                    if ("y".equals(fullScreen)) {
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        getSupportActionBar().hide();
+                    }
+
+                    Uri videoUri = Uri.parse(m.url);
+
+                    videoView.setVideoURI(videoUri);
+
+                    mediaController = new FullScreenMediaController(VideoDetailVC.this);
+                    mediaController.setAnchorView(videoView);
 
                     videoView.setMediaController(mediaController);
+                    videoView.start();
 
-                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            videoView.start();
-                            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mediaPlayer) {
-                                    Toast.makeText(VideoDetailVC.this, "Finish", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
                     b.setView(v);
-                    /*b.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    *//*b.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -389,16 +380,34 @@ public class VideoDetailVC extends BaseVC {
                                 }
                             });
                         }
-                    });*/
+                    });*//*
                     b.setNegativeButton("Close", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
-                    b.show();
+                    b.show();*/
 
+                    /*Intent i = new Intent(VideoDetailVC.this, FullScreen.class);
+                    startActivity(i);*/
 
+                    /*String fullScreen =  getIntent().getStringExtra("fullScreenInd");
+                    if("y".equals(fullScreen)){
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        getSupportActionBar().hide();
+                    }*/
+
+                    Uri videoUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/baseball-qld.appspot.com/o/Videos%2F121%2F1539337723.mp4?alt=media&token=7e1e2d26-9e44-480b-a6fd-edd963491d49");
+
+                    videoView.setVideoURI(videoUri);
+
+                    mediaController = new FullScreenMediaController(VideoDetailVC.this);
+                    mediaController.setAnchorView(videoView);
+
+                    videoView.setMediaController(mediaController);
+                    videoView.start();
                 }
             });
             slider.addSlider(textSliderView);
@@ -423,7 +432,7 @@ public class VideoDetailVC extends BaseVC {
         if (selectedMedia != null) {
             int index = 0;
             for (int i = 0; i < mediaAlbum.mediaModels.size(); i++) {
-                Video m = mediaAlbum.mediaModels.get(i);
+                Media m = mediaAlbum.mediaModels.get(i);
                 Log.d("videodetails", "searching media:" + m.mediaId + " selected: " + selectedMedia.mediaId);
                 if (selectedMedia.mediaId == m.mediaId) {
                     index = i;
@@ -506,7 +515,7 @@ public class VideoDetailVC extends BaseVC {
                 mediaAlbum = ma;
                 mediaAlbum.sortMediaAlbumsByDate();
 
-                for (Video m : ma.mediaModels) {
+                for (Media m : ma.mediaModels) {
                     if (selectedMedia.mediaId == m.mediaId) {
                         selectedMedia = m;
                         break;

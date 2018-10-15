@@ -17,6 +17,7 @@ import com.sportsclub.baseballqld.models.GroupResponse;
 import com.sportsclub.baseballqld.models.LaddersResponse;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
+import com.sportsclub.baseballqld.models.MediaModelReponse;
 import com.sportsclub.baseballqld.models.Member;
 import com.sportsclub.baseballqld.models.Notification;
 import com.sportsclub.baseballqld.models.NotificationResponse;
@@ -291,6 +292,8 @@ public interface API {
     @GET("/apiv2/video/get/{groupID}")
     public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
 
+    @GET("/apiv2/video/album/{id}")
+    public void getMediaModelRes(@Header("Authorization") String auth, @Path("id") int mediaAlbumID,  Callback<MediaAlbumResponse> response);
 
     //new api v2
     @GET("/apiv2/document/get/{groupID}")

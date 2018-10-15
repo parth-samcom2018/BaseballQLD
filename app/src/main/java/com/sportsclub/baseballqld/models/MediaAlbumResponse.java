@@ -2,7 +2,7 @@ package com.sportsclub.baseballqld.models;
 
 import java.util.List;
 
-public class MediaAlbumResponse extends Media{
+public class MediaAlbumResponse {
 
     private boolean error;
     private String message;

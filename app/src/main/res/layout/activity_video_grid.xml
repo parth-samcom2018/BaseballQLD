@@ -12,14 +12,15 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/empty"
+        android:id="@+id/empty_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/group_list_empty"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+        android:id="@+id/swiperefresh_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -58,7 +58,7 @@ public class GroupFragment extends Fragment {
 
         emptyIV = v.findViewById(R.id.empty);
 
-        final ProgressDialog pd = DM.getPD(getActivity(),"Loading Videos...");
+        final ProgressDialog pd = DM.getPD(getActivity(),"Loading Groups...");
         if(this.isVisible())pd.show();
 
         gridView = v.findViewById(R.id.list);

@@ -20,7 +20,7 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/myImageView_video"
+                android:id="@+id/myImageView_solo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/splashlogo"
@@ -29,7 +29,7 @@
                 />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textView_solo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

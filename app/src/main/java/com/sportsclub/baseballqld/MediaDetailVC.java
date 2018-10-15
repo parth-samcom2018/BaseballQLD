@@ -79,13 +79,19 @@ public class MediaDetailVC extends BaseVC {
         mediaAlbum.sortMediaAlbumsByDate(); //sort by oldest last, since api is useless
         try {
             selectedMedia = mediaAlbum.mediaModels.get(0); //DEFAULT TO FIRST
+            Log.d("media", "response:" + mediaAlbum.mediaModels.size());
+            Log.d("media", "response:" + selectedMedia.url);
+            Log.d("media", "response:" + selectedMedia.thumbnail);
         } catch (NullPointerException e) {
             e.printStackTrace();
             Log.e("YOUR_APP_LOG_TAG", "I got an error", e);
+
         }
 
         if (selectedMediaId != 0) {
             Log.d("hq", "passed selected media id:" + selectedMediaId);
+            Log.d("media", "response:" + selectedMedia.url);
+            Log.d("media", "response:" + selectedMedia.thumbnail);
             //passed some media for selection
 
             for (Media m : mediaAlbum.mediaModels) {

@@ -1,17 +1,15 @@
-package com.sportsclub.baseballqld;
+package com.sportsclub.baseballqld.models;
 
-import com.sportsclub.baseballqld.models.Media;
-import com.sportsclub.baseballqld.models.VideoAlbum;
-
+import java.util.ArrayList;
 import java.util.List;
 
-public class VideoAlbumResponse extends Media {
+public class MediaModelReponse {
 
     private boolean error;
     private String message;
-    private List<VideoAlbum> data;
+    private List<MediaAlbum> data = new ArrayList<>();
 
-    public VideoAlbumResponse() {
+    public MediaModelReponse() {
     }
 
     public boolean isError() {
@@ -30,13 +28,11 @@ public class VideoAlbumResponse extends Media {
         this.message = message;
     }
 
-    public List<VideoAlbum> getData() {
+    public List<MediaAlbum> getData() {
         return data;
     }
 
-    public void setData(List<VideoAlbum> data) {
+    public void setData(List<MediaAlbum> data) {
         this.data = data;
     }
-
 }
-

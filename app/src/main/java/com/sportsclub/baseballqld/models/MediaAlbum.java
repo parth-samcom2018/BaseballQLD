@@ -15,6 +15,7 @@ public class MediaAlbum extends Media {
     //public List<Video> videoModels = new ArrayList<>();
     public String createdByAvatar;
     public String coverImage;
+    public int folderType;
 
 
     public void sortMediaAlbumsByDate()
@@ -32,7 +33,7 @@ public class MediaAlbum extends Media {
 
     }
 
-    /*public void sortVideoAlbumByDate() {
+   /* public void sortVideoAlbumByDate() {
         Collections.sort(this.videoModels, new Comparator<Video>() {
             @Override
             public int compare(Video video, Video t1) {

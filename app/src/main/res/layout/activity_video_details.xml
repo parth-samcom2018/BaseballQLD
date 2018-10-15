@@ -19,15 +19,15 @@
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/grid_cell_height_extra_large"
+        android:layout_height="220dp"
         />
 
 
 
-    <!--<VideoView
+    <VideoView
         android:id="@+id/videoview_details"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />-->
+        android:layout_height="200dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

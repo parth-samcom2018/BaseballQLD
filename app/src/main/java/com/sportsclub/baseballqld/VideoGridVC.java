@@ -1,6 +1,7 @@
 package com.sportsclub.baseballqld;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.GroupResponse;
+import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
+import com.sportsclub.baseballqld.models.MediaAlbumResponse;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 
@@ -33,14 +37,21 @@ import retrofit.client.Response;
 
 public class VideoGridVC extends BaseVC {
 
+    //public static VideoAlbum mediaAlbum;
+    public static int selectedMediaId;
+    private Media selectedMedia;
     public static VideoAlbum mediaAlbum;
-    Group group;
+
+    Media group;
+    //Media media;
     private GridView gridView;
-    private ArrayAdapter<Event> gridAdapter;
+    private ArrayAdapter<Media> gridAdapter;
     private SwipeRefreshLayout refreshLayout;
     private ImageView emptyIV;
 
-    private List<Group> groups = new Vector<Group>();
+    private List<MediaAlbum> medias = new Vector<MediaAlbum>();
+    private List<VideoAlbum> albums = new Vector<VideoAlbum>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,13 +65,12 @@ public class VideoGridVC extends BaseVC {
 
         loadData();
 
-        emptyIV = findViewById(R.id.empty);
-
+        emptyIV = findViewById(R.id.empty_grid);
 
         gridView = findViewById(R.id.list_video);
 
 
-        gridAdapter = new ArrayAdapter<Event>(VideoGridVC.this, R.layout.group_cell) {
+        gridAdapter = new ArrayAdapter<Media>(VideoGridVC.this, R.layout.video_album_cell) {
 
 
             @Override
@@ -68,18 +78,17 @@ public class VideoGridVC extends BaseVC {
 
                 if (convertView == null) {
                     try {
-                        convertView = LayoutInflater.from(VideoGridVC.this).inflate(R.layout.group_cell, parent, false);
+                        convertView = LayoutInflater.from(VideoGridVC.this).inflate(R.layout.video_album_cell, parent, false);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
                 }
 
-                final Group group = groups.get(position);
+                final MediaAlbum group = medias.get(position);
 
+                final ImageView myImageView = convertView.findViewById(R.id.myImageView_solo);
 
-                final ImageView myImageView = convertView.findViewById(R.id.myImageView);
-
-                final TextView tv = convertView.findViewById(R.id.textView);
+                final TextView tv = convertView.findViewById(R.id.textView_solo);
 
                 Picasso.Builder builder = new Picasso.Builder(VideoGridVC.this);
                 builder.listener(new Picasso.Listener() {
@@ -89,13 +98,21 @@ public class VideoGridVC extends BaseVC {
                         exception.printStackTrace();
                     }
                 });
-                try {
-                    Picasso p = builder.build();
-                    p.load(group.groupImage).placeholder(R.drawable.group_first).into(myImageView);//.networkPolicy(NetworkPolicy.NO_CACHE).
-                    tv.setText(group.groupName);
+                Picasso p = builder.build();
 
-                } catch (NullPointerException n) {
-                    n.printStackTrace();
+                mediaAlbum.sortMediaAlbumsByDate(); //sort by oldest last, since api is useless
+                try {
+                    selectedMedia = mediaAlbum.mediaModels.get(0); //DEFAULT TO FIRST
+                    Log.d("video", "response:" + mediaAlbum.mediaModels.size());
+                    Log.d("video", "response:" + selectedMedia.url);
+                    Log.d("video", "response:" + selectedMedia.thumbnail);
+                    p.load(group.thumbnail)//.networkPolicy(NetworkPolicy.NO_CACHE)
+                            .placeholder(R.drawable.video).into(myImageView);
+                    tv.setText(group.url);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    Log.e("video", "I got an error", e);
+
                 }
 
                 return convertView;
@@ -103,7 +120,7 @@ public class VideoGridVC extends BaseVC {
 
             @Override
             public int getCount() {
-                return groups.size();
+                return medias.size();
             }
         };
         gridView.setAdapter(gridAdapter);
@@ -111,22 +128,11 @@ public class VideoGridVC extends BaseVC {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                /*try {
-                    Group g = groups.get(position);
-                    GroupVC.group = g;
-                    Intent i = new Intent(VideoGridVC.this, GroupVC.class);
-                    startActivity(i);
-
-                    Log.d("Group", "id :" + g.groupId);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }*/
-
+                Toast.makeText(VideoGridVC.this, "" + parent, Toast.LENGTH_SHORT).show();
             }
         });
 
-        refreshLayout = findViewById(R.id.swiperefresh);
+        refreshLayout = findViewById(R.id.swiperefresh_grid);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -143,12 +149,12 @@ public class VideoGridVC extends BaseVC {
 
         String auth = DM.getAuthString();
 
-        DM.getApi().getAllGrouping(auth, new Callback<GroupResponse>() {
+        /*DM.getApi().getAllGrouping(auth, new Callback<GroupResponse>() {
             @Override
             public void success(GroupResponse gs, Response response) {
 
 
-                groups = gs.getData();
+                medias = gs.getData();
                 gridAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
@@ -164,7 +170,37 @@ public class VideoGridVC extends BaseVC {
                 pd.dismiss();
 
             }
+        });*/
+
+        Log.d("res","onresponse: " + mediaAlbum.mediaAlbumId);
+        Log.d("res","onresponse: " + mediaAlbum.mediaModels.size());
+
+        DM.getApi().getMediaModelRes(auth, mediaAlbum.mediaAlbumId,  new Callback<MediaAlbumResponse>() {
+            @Override
+            public void success(MediaAlbumResponse mediaModelReponse, Response response) {
+
+
+                medias = mediaModelReponse.getData();
+                gridAdapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+                pd.dismiss();
+
+                if(mediaModelReponse.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
+                else emptyIV.setVisibility(View.GONE);
+
+
+                Log.d("grid", "size: " + mediaModelReponse.getData().size());
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                refreshLayout.setRefreshing(false);
+                pd.dismiss();
+                gridAdapter.notifyDataSetChanged();
+            }
         });
+
     }
 
 

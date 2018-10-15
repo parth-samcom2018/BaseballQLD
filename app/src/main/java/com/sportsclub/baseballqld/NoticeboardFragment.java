@@ -279,7 +279,7 @@ public class NoticeboardFragment extends Fragment {
 
                     if (iv != null && n.thumbnailUrl != null) {
 
-                        Log.d("video", "thumb url:" + n.thumbnailUrl);
+                        Log.d("video", "thumbnail url:" + n.thumbnailUrl);
                         //   Picasso.with(NoticeboardFragment.this.getContext()).load(n.thumbnailUrl).into(iv);
 
 
@@ -326,7 +326,7 @@ public class NoticeboardFragment extends Fragment {
 
                     if (iv != null && n.thumbnailUrl != null) {
 
-                        Log.d("hq", "thumb url:" + n.thumbnailUrl);
+                        Log.d("hq", "thumbnail url:" + n.thumbnailUrl);
                         //   Picasso.with(NoticeboardFragment.this.getContext()).load(n.thumbnailUrl).into(iv);
 
 
