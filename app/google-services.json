@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "610448573746-suso594gjafi8cp15937fuba2f4dk3tl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sportsclub.baseballqld",
+            "certificate_hash": "4425e4ade43eb8c2d06e58a13c365d9a3781b49e"
+          }
+        },
+        {
           "client_id": "610448573746-k5c2sva1mnomc9hf8h1muak7ceiqredo.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610448573746-k5c2sva1mnomc9hf8h1muak7ceiqredo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "610448573746-khf6be8p8h055i3h00qvi3rn962h7ddo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thehqnetwork.BaseballQLD"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

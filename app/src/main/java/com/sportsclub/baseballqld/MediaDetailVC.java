@@ -162,6 +162,9 @@ public class MediaDetailVC extends BaseVC {
 
                         tvdata.setText("" + mc.comment);
 
+                        Log.d("comment", "id: " + DM.member.memberId);
+                        Log.d("comment", "id: " + mc.memberId);
+
                         Button btn_no = dialog.findViewById(R.id.btn_no);
                         btn_no.setOnClickListener(new View.OnClickListener() {
                             @Override

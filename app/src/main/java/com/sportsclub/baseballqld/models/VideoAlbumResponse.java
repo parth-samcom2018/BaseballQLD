@@ -1,11 +1,11 @@
-package com.sportsclub.baseballqld;
+package com.sportsclub.baseballqld.models;
 
-import com.sportsclub.baseballqld.models.Media;
+
 import com.sportsclub.baseballqld.models.VideoAlbum;
 
 import java.util.List;
 
-public class VideoAlbumResponse extends Media {
+public class VideoAlbumResponse  {
 
     private boolean error;
     private String message;

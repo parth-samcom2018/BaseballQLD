@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -35,11 +36,16 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaComment;
+import com.sportsclub.baseballqld.models.Video;
 import com.sportsclub.baseballqld.models.VideoAlbum;
+import com.sportsclub.baseballqld.models.VideoComment;
 import com.sportsclub.baseballqld.views.TextPoster;
 import com.squareup.picasso.Picasso;
 
@@ -50,13 +56,16 @@ import retrofit.client.Response;
 public class VideoDetailVC extends BaseVC {
 
     private static final String TAG = "QLD";
-    //public static MediaAlbum mediaAlbum;
-    public static VideoAlbum mediaAlbum;
+    public static MediaAlbum mediaAlbum;
+    //public static VideoAlbum mediaAlbum;
     public static int selectedMediaId;
+    private StorageReference videoref;
 
     private Media selectedMedia;
     //private Video selectedMedia;
-    private MediaVC mediaVC;
+    //private MediaVC mediaVC;
+    private VideoVC videoVC;
+
 
     //VIEWS
     private ListView listView;
@@ -86,19 +95,24 @@ public class VideoDetailVC extends BaseVC {
         mediaAlbum.sortMediaAlbumsByDate(); //sort by oldest last, since api is useless
         try {
             selectedMedia = mediaAlbum.mediaModels.get(0); //DEFAULT TO FIRST
+
+            Log.d("videoalbums", "this:" + selectedMedia.url);
+            Log.d("videoalbums", "this:" + selectedMedia.thumbnail);
         } catch (NullPointerException e) {
             e.printStackTrace();
             Log.e("YOUR_APP_LOG_TAG", "I got an error", e);
         }
 
         if (selectedMediaId != 0) {
-            Log.d("videodetails", "passed selected media id:" + selectedMediaId);
+            Log.d("videoalbums", "passed selected video id:" + selectedMediaId);
             //passed some media for selection
 
             for (Media m : mediaAlbum.mediaModels) {
                 if (m.mediaId == selectedMediaId) {
 
-                    Log.d("videodetails", "found selected media:" + selectedMediaId);
+                    Log.d("videoalbums", "found selected video id:" + selectedMediaId);
+                    Log.d("videoalbums", "found selected video url:" + selectedMedia.url);
+                    Log.d("videoalbums", "found selected video thumbnail:" + selectedMedia.thumbnail);
                     selectedMedia = m; //reference the model in the array
                     break;
                 }
@@ -110,7 +124,9 @@ public class VideoDetailVC extends BaseVC {
                     break;
                 }
             }*/
-            Log.d("videodetails", "passed to see media:" + selectedMedia.url);
+            Log.d("videoalbums", "passed to see video:" + selectedMedia.url);
+            Log.d("videoalbums", "passed to see video:" + selectedMedia.thumbnail);
+
         }
 
 
@@ -153,7 +169,7 @@ public class VideoDetailVC extends BaseVC {
                 ImageView userIV = convertView.findViewById(R.id.imageView);
                 Picasso p = Picasso.with(this.getContext());
                 p.setIndicatorsEnabled(true);
-                p.load(mc.memberAvatar)
+                p.load(selectedMedia.thumbnail)
                         .placeholder(R.drawable.icon)
                         //.fetch();
                         .into(userIV);
@@ -244,7 +260,7 @@ public class VideoDetailVC extends BaseVC {
         secondTV = findViewById(R.id.secondTV);
         imageView = findViewById(R.id.imageView);
 
-        videoView = findViewById(R.id.videoview_details);
+        /* videoView = findViewById(R.id.videoview_details);*/
 
 
         slider = findViewById(R.id.slider);
@@ -263,9 +279,8 @@ public class VideoDetailVC extends BaseVC {
             public void onPageSelected(int position) {
 
                 selectedMedia = mediaAlbum.mediaModels.get(position);
-                Log.d("videodetails", "on page selected changed media!!!");
+                Log.d("videodetails", "on page selected changed video!!! : " + selectedMedia.url);
                 listAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -273,6 +288,13 @@ public class VideoDetailVC extends BaseVC {
 
             }
         });
+
+        Long tsLong = System.currentTimeMillis() / 1000;
+        String ts = tsLong.toString();
+
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        videoref = storageRef.child("/Videos/" + DM.member.memberId + "/" + ts + ".mp4");
     }
 
 
@@ -297,12 +319,12 @@ public class VideoDetailVC extends BaseVC {
         //Video hackSelected = selectedMedia;
 
         firstTV.setText(mediaAlbum.name);
-        secondTV.setText("Uploaded By:\n" + mediaAlbum.createdBy);
+        secondTV.setText("Uploaded Video By:\n" + mediaAlbum.createdBy);
 
         Picasso p = Picasso.with(this);
         p.setIndicatorsEnabled(true);
-        p.load(mediaAlbum.createdByAvatar)
-                .placeholder(R.drawable.icon)
+        p.load(selectedMedia.thumbnail)
+                .placeholder(R.drawable.video)
                 //.fetch();
                 .into(imageView);
 
@@ -310,6 +332,7 @@ public class VideoDetailVC extends BaseVC {
         for (final Media m : mediaAlbum.mediaModels) {
             //HACK needed becuase picasso does not take https
             m.url = DM.fromHTTPStoHTTP(m.url);
+
 
             if (m.url == "") continue; //skip empty ones
             final TextSliderView textSliderView = new TextSliderView(this);
@@ -319,6 +342,8 @@ public class VideoDetailVC extends BaseVC {
                     //.image(m.url)
                     .image(R.drawable.video)
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+
+
             //.setOnSliderClickListener(this);
 
             //add your extra information
@@ -331,13 +356,22 @@ public class VideoDetailVC extends BaseVC {
             textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                 @Override
                 public void onSliderClick(BaseSliderView slider) {
-
+                    Log.d("slider", "video" + selectedMedia.url);
+                    /*Log.d("response", "onsuccess : " + selectedMedia.thumbnail);
+                    Log.d("response", "onsuccess : " + mediaAlbum.thumbnail);
+                    Log.d("response", "onsuccess : " + mediaAlbum.url);
+                    Log.d("response", "onsuccess : " + mediaAlbum.name);*/
+                    Log.d("response", "onsuccess : " + videoref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("response", "onsuccess" + uri.toString());
+                        }
+                    }));
                     /*AlertDialog.Builder b = new AlertDialog.Builder(VideoDetailVC.this);
 
                     View v = getLayoutInflater().inflate(R.layout.video_dialog, null);
                     //ImageViewTouch iv = v.findViewById(R.id.imageView);
                     final VideoView videoView = v.findViewById(R.id.video);
-
 
                     String fullScreen = getIntent().getStringExtra("fullScreenInd");
                     if ("y".equals(fullScreen)) {
@@ -346,7 +380,7 @@ public class VideoDetailVC extends BaseVC {
                         getSupportActionBar().hide();
                     }
 
-                    Uri videoUri = Uri.parse(m.url);
+                    Uri videoUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/baseball-qld.appspot.com/o/Videos%2F121%2F1539587499.mp4?alt=media&token=5b5a754f-f0ef-48b2-93ba-4fdb4db8fd1a");
 
                     videoView.setVideoURI(videoUri);
 
@@ -356,41 +390,14 @@ public class VideoDetailVC extends BaseVC {
                     videoView.setMediaController(mediaController);
                     videoView.start();
 
+
                     b.setView(v);
-                    *//*b.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-
-                            String auth = DM.getAuthString();
-
-                            DM.getApi().deleteMediaItem(auth, m.mediaId, new Callback<Response>() {
-                                @Override
-                                public void success(Response response, Response response2) {
-
-                                    Toast.makeText(VideoDetailVC.this, "Successfully deleted media item", Toast.LENGTH_SHORT).show();
-                                    refreshLayout.setRefreshing(true);
-                                    //startActivity(new Intent(VideoDetailVC.this, GroupVC.class));
-                                    finish();
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    Toast.makeText(VideoDetailVC.this, "Media item cannot be deleted", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });*//*
-                    b.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
                     b.show();*/
 
-                    /*Intent i = new Intent(VideoDetailVC.this, FullScreen.class);
-                    startActivity(i);*/
+                    Intent i = new Intent(VideoDetailVC.this, FullScreen.class);
+                    i.putExtra("url", selectedMedia.url);
+                    Log.d("url", "video :" + selectedMedia.url);
+                    startActivity(i);
 
                     /*String fullScreen =  getIntent().getStringExtra("fullScreenInd");
                     if("y".equals(fullScreen)){
@@ -399,15 +406,7 @@ public class VideoDetailVC extends BaseVC {
                         getSupportActionBar().hide();
                     }*/
 
-                    Uri videoUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/baseball-qld.appspot.com/o/Videos%2F121%2F1539337723.mp4?alt=media&token=7e1e2d26-9e44-480b-a6fd-edd963491d49");
 
-                    videoView.setVideoURI(videoUri);
-
-                    mediaController = new FullScreenMediaController(VideoDetailVC.this);
-                    mediaController.setAnchorView(videoView);
-
-                    videoView.setMediaController(mediaController);
-                    videoView.start();
                 }
             });
             slider.addSlider(textSliderView);
@@ -505,13 +504,13 @@ public class VideoDetailVC extends BaseVC {
     }
 
     private void refreshMedia() {
-        final ProgressDialog pd = DM.getPD(this, "Refreshing Media...");
+        final ProgressDialog pd = DM.getPD(this, "Refreshing Video...");
         pd.show();
 
 
-        DM.getApi().getVideoAlbum(DM.getAuthString(), mediaAlbum.mediaAlbumId, new Callback<VideoAlbum>() {
+        DM.getApi().getVideoAlbum(DM.getAuthString(), mediaAlbum.mediaAlbumId, new Callback<MediaAlbum>() {
             @Override
-            public void success(VideoAlbum ma, Response response) {
+            public void success(MediaAlbum ma, Response response) {
                 mediaAlbum = ma;
                 mediaAlbum.sortMediaAlbumsByDate();
 
@@ -520,11 +519,20 @@ public class VideoDetailVC extends BaseVC {
                         selectedMedia = m;
                         break;
                     }
+
+
+                    Log.d("details", "url :" + m.url);
+                    Log.d("details", "thumb :" + m.thumbnail);
+                    Log.d("details", "url :" + mediaAlbum.url);
+                    Log.d("details", "thumb :" + mediaAlbum.thumbnail);
+                    Log.d("details", "thumb :" + ma.thumbnail);
+                    Log.d("details", "thumb :" + ma.url);
                 }
 
                 modelToView();
                 pd.dismiss();
                 refreshLayout.setRefreshing(false);
+
             }
 
             @Override

@@ -1,8 +1,12 @@
 package com.sportsclub.baseballqld;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +14,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sportsclub.baseballqld.models.ClubNames;
+import com.sportsclub.baseballqld.models.ClubResponse;
 import com.sportsclub.baseballqld.models.Event;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.GroupResponse;
@@ -38,6 +54,7 @@ public class GroupFragment extends Fragment {
     private ArrayAdapter<Event> gridAdapter;
     private SwipeRefreshLayout refreshLayout;
     private ImageView emptyIV;
+    private ProgressDialog pd;
 
     private List<Group> groups = new Vector<Group>();
 
@@ -46,10 +63,97 @@ public class GroupFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.create_group_menu, menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //theres only create
+        if(item.getItemId() == R.id.creategrp)this.newGroupAction();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void newGroupAction() {
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(GroupFragment.this.getActivity());
+
+        LinearLayout lila1 = new LinearLayout(GroupFragment.this.getActivity());
+        lila1.setOrientation(LinearLayout.VERTICAL);
+        final EditText nameET = new EditText(GroupFragment.this.getActivity());
+        nameET.setHint("Group Name");
+        final EditText descET = new EditText(GroupFragment.this.getActivity());
+        descET.setVisibility(View.GONE);
+        descET.setHint("Group Description");
+        lila1.addView(nameET);
+        int pad = (int)getResources().getDimension(R.dimen.small_pad);
+        lila1.setPadding(pad,pad,pad,pad);
+        alert.setView(lila1);
+
+        alert.setTitle("Create Group");
+
+
+        alert.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, int whichButton) {
+                String name = nameET.getText().toString();
+
+                if(name.length() == 0 || name == null)
+                {
+                    Toast.makeText(GroupFragment.this.getActivity(),"Enter a Group Name",Toast.LENGTH_LONG).show();
+                    DM.hideKeyboard(GroupFragment.this.getActivity());
+                    return;
+                }
+
+
+                pd = DM.getPD(GroupFragment.this.getActivity(),"Loading Creating Group..");
+                pd.show();
+
+                DM.getApi().creategroup(DM.getAuthString(), name, new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Toast.makeText(GroupFragment.this.getActivity(),"Group Created!",Toast.LENGTH_LONG).show();
+                        pd.dismiss();
+                        dialog.dismiss();
+                        DM.hideKeyboard(GroupFragment.this.getActivity());
+
+                        loadData();
+                        refreshLayout.setRefreshing(true);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(GroupFragment.this.getActivity(),"Could not create group: "+error.getMessage(),Toast.LENGTH_LONG).show();
+                        pd.dismiss();
+                        dialog.dismiss();
+                        DM.hideKeyboard(GroupFragment.this.getActivity());
+
+                        loadData();
+                        refreshLayout.setRefreshing(true);
+                    }
+                });
+
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DM.hideKeyboard(GroupFragment.this.getActivity());
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         inflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View v = inflater.inflate(R.layout.fragment_groups, container, false);

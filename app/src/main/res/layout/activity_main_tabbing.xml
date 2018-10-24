@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -18,16 +19,17 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_top"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center"
             android:layout_gravity="center">
 
             <ImageView
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:src="@drawable/logo_log_in"
                 android:gravity="center"
                 android:layout_gravity="center"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,6 +69,8 @@
                 android:gravity="right"
                 android:layout_gravity="right"/>
         </android.support.v7.widget.Toolbar>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -76,6 +80,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/ll_main"
         android:background="@drawable/textshape">
+
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
@@ -100,7 +105,9 @@
             android:tabStripEnabled="false"
             app:tabSelectedTextColor="@color/tab_background_selected" />
 
+
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -140,6 +147,7 @@
             android:layout_height="120dp"
             android:src="@drawable/user_75_black"
             />
+
         <ImageButton
             android:id="@+id/ib_edit"
             android:layout_width="35dp"
@@ -151,5 +159,20 @@
             android:scaleType="center"
             android:elevation="5dp"/>
 
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:background="@drawable/shape_user"
+            android:cropToPadding="true"
+            android:elevation="5dp"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/user_75_black"
+            android:visibility="gone" />
     </FrameLayout>
+
+
 </RelativeLayout>

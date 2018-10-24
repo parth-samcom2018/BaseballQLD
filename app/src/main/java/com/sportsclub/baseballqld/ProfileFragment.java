@@ -245,35 +245,69 @@ public class ProfileFragment extends Fragment {
 
     private void logoutAction()
     {
-
-        DM.member = null;
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ProfileFragment.this.getActivity());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("HQUsername");
-        editor.remove("HQToken");
-        //editor.remove("DeviceId");
-        editor.apply();
-
         unregisterForPush();
-
-        getActivity().finish();
-
-        Intent i = new Intent(ProfileFragment.this.getActivity(), Login.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-
-
     }
+
+    private boolean initialLoaded = false;
+
+    public void loadIfUnloaded() {
+        if (initialLoaded == false) loadData();
+    }
+
+    private void loadData() {
+        final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Log out user...");
+        pd.show();
+
+        DM.getApi().logoutUser(DM.getAuthString(),new Callback<Response>() {
+            @Override
+            public void success(Response response, Response response2) {
+                Toast.makeText(getActivity(), "Successfully Logout", Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+
+                DM.member = null;
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ProfileFragment.this.getActivity());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("HQUsername");
+                editor.remove("HQToken");
+                //editor.remove("DeviceId");
+                editor.apply();
+
+                getActivity().finish();
+
+                Intent i = new Intent(ProfileFragment.this.getActivity(), Login.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), "Successfully Logout" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+
+            }
+        });
+    }
+
 
     private void unregisterForPush()
     {
 
-        DM.getApi().logoutUser(DM.getAuthString(), new Callback<Response>() {
+        loadData();
+
+        /*DM.getApi().logoutUser(DM.getAuthString(), new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
+
+
                 Toast.makeText(getActivity(), "Successfully Remove Push notification", Toast.LENGTH_SHORT).show();
                 Log.d("push", response2.toString());
+
+                getActivity().finish();
+
+                Intent i = new Intent(ProfileFragment.this.getActivity(), Login.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
             }
 
             @Override
@@ -281,7 +315,7 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getActivity(), "Something is wrong:" + error, Toast.LENGTH_SHORT).show();
                 Log.d("push" , error.toString());
             }
-        });
+        });*/
 
     }
 

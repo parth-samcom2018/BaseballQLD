@@ -20,14 +20,15 @@
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:visibility="visible"
         />
 
 
-
-    <VideoView
+    <!--<VideoView
         android:id="@+id/videoview_details"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        />-->
 
     <LinearLayout
         android:layout_width="match_parent"

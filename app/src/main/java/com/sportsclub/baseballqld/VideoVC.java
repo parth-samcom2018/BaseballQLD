@@ -43,11 +43,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Group;
 import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
+import com.sportsclub.baseballqld.models.Video;
 import com.sportsclub.baseballqld.models.VideoAlbum;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -70,15 +70,11 @@ public class VideoVC extends Fragment {
     private static final String TAG = "QLD";
 
     boolean isSelected;
-    Album albummodel;
 
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
-    public static final String ALLOW_KEY = "ALLOWED";
-    public static final String CAMERA_PREF = "camera_pref";
     public Group group;
 
-    //private List<MediaAlbum> albums = new Vector<MediaAlbum>();
-    private List<VideoAlbum> albums = new Vector<VideoAlbum>();
+    private List<MediaAlbum> albums = new Vector<MediaAlbum>();
+    //private List<VideoAlbum> albums = new Vector<VideoAlbum>();
 
     private SwipeRefreshLayout refreshLayout;
     private ListView listView;
@@ -110,7 +106,7 @@ public class VideoVC extends Fragment {
 
         loadData();
 
-        listAdapter = new ArrayAdapter<Media>(this.getActivity(), R.layout.video_cell) {
+        listAdapter = new ArrayAdapter<Video>(this.getActivity(), R.layout.video_cell) {
 
 
             @Override
@@ -121,8 +117,8 @@ public class VideoVC extends Fragment {
 
                 }
 
-                //final MediaAlbum album = albums.get(position);
-                final VideoAlbum album = albums.get(position);
+                final MediaAlbum album = albums.get(position);
+                //final VideoAlbum album = albums.get(position);
 
                 final TextView tv_media = convertView.findViewById(R.id.tv_media);
                 tv_media.setVisibility(View.VISIBLE);
@@ -143,7 +139,7 @@ public class VideoVC extends Fragment {
                     builder.listener(new Picasso.Listener() {
                         @Override
                         public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                            Log.d("hq", "uri: " + uri.getPath());
+                            //Log.d("hq", "uri: " + uri.getPath());
                             exception.printStackTrace();
                         }
                     });
@@ -187,7 +183,7 @@ public class VideoVC extends Fragment {
                             }
                         });
 
-                        Log.d("video", "thumbnail:" + album.thumbnail);
+                        //Log.d("video", "thumbnail:" + album.thumbnail);
 
                         if (album.thumbnail == null || album.thumbnail.isEmpty()) {
                             showiv.setImageResource(R.drawable.video);
@@ -204,11 +200,12 @@ public class VideoVC extends Fragment {
                                     return;
                                 }
 
-                                Log.d("video", "get:" + album.mediaModels.size());
-                                Log.d("videoalbumID", "id:" + album.mediaAlbumId);
-                                //VideoDetailVC.mediaAlbum = album;
-                                VideoGridVC.mediaAlbum = album;
-                                Intent i = new Intent(getActivity(), VideoGridVC.class);
+                                /*Log.d("video", "get:" + album.mediaModels.size());
+                                Log.d("videoalbumID", "id:" + album.mediaAlbumId);*/
+
+                                VideoDetailVC.mediaAlbum = album;
+                                //VideoGridVC.mediaAlbum = album;
+                                Intent i = new Intent(getActivity(), VideoDetailVC.class);
                                 startActivity(i);
 
                             }
@@ -227,9 +224,13 @@ public class VideoVC extends Fragment {
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(VideoVC.this.getActivity()));
 
-                Log.d("video", "mediamodel: " + album.mediaModels.size());
-                Log.d("video", "url: " + album.url);
-                Log.d("video", "name: " + album.name);
+                /*Log.d("videoFragment", "mediamodel: " + album.mediaModels.size());
+                Log.d("videoFragment", "url: " + album.url);
+                Log.d("videoFragment", "name: " + album.name);
+                Log.d("videoFragment", "thumbnail: " + album.thumbnail);
+                Log.d("videoFragment", "mediaid: " + album.mediaId);*/
+
+
 
                 return convertView;
             }
@@ -341,9 +342,9 @@ public class VideoVC extends Fragment {
                         dialog.dismiss();
                         DM.hideKeyboard(VideoVC.this.getActivity());
                         loadData();
-                        Log.d("onSuccess", "response" + response);
+                        /*Log.d("onSuccess", "response" + response);
                         Log.d("onSuccess", "response" + response2);
-                        Log.d("video", "id:" + albums.get(0).mediaAlbumId);
+                        Log.d("video", "id:" + albums.get(0).mediaAlbumId);*/
                     }
 
                     @Override
@@ -354,7 +355,7 @@ public class VideoVC extends Fragment {
                         DM.hideKeyboard(VideoVC.this.getActivity());
                         loadData();
 
-                        Log.d("onFailed", "response" + error);
+                        //Log.d("onFailed", "response" + error);
                     }
                 });
 
@@ -403,10 +404,10 @@ public class VideoVC extends Fragment {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(getActivity(), "Upload complete",
                                     Toast.LENGTH_LONG).show();
-                            Log.d("video", ":" + videouri);
+                            /*Log.d("video", ":" + videouri);
                             Log.d("video", ":" + albumID);
                             Log.d("video", ":" + videoref);
-                            Log.d("video", "memberID:" + DM.member.memberId);
+                            Log.d("video", "memberID:" + DM.member.memberId);*/
                             pd.dismiss();
 
 
@@ -414,7 +415,7 @@ public class VideoVC extends Fragment {
                                 @Override
                                 public void onSuccess(final Uri uri) {
                                     Toast.makeText(getActivity(), "" + uri, Toast.LENGTH_SHORT).show();
-                                    Log.d("video", "url:" + uri);
+                                    //Log.d("videoPost", "fbURLVideo:" + uri);
 
 
                                     DM.getApi().postVideoToAlbum(DM.getAuthString(), albumID, uri.toString(), new Callback<Response>() {
@@ -423,8 +424,9 @@ public class VideoVC extends Fragment {
                                             pd.dismiss();
                                             Toast.makeText(getActivity(), "Successfully add to server", Toast.LENGTH_LONG).show();
                                             loadData();
-                                            Log.d("video", "data:" + albumID);
+                                            /*Log.d("video", "data:" + albumID);
                                             Log.d("video", "data:" + uri);
+                                            Log.d("video", "fbURLVideo:" + uri.toString());*/
                                             loadData();
                                         }
 
@@ -532,7 +534,7 @@ public class VideoVC extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 int index = picker.getValue();
                 uploadAction(albums.get(index).mediaAlbumId);
-                Log.d("video", "id:" + albums.get(index).mediaAlbumId);
+                //Log.d("video", "id:" + albums.get(index).mediaAlbumId);
             }
         });
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -558,19 +560,32 @@ public class VideoVC extends Fragment {
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Video Albums...");
         pd.show();
 
+
         if (group != null)
-            DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<VideoAlbumResponse>() {
+            DM.getApi().getGroupingVideoAlbum(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
                 @Override
-                public void success(VideoAlbumResponse mediaAlbums, Response response) {
+                public void success(MediaAlbumResponse mediaAlbums, Response response) {
                     albums = mediaAlbums.getData();
-                    for (VideoAlbum a : albums) {
+                    for (MediaAlbum a : albums) {
                         a.sortMediaAlbumsByDate();
-                        //a.sortVideoAlbumByDate();
-                        Log.d("video", "firebase:" + a.mediaModels.size());
-                        Log.d("video", "firebase:" + albums.size());
-                        Log.d("video", "album:" + a.url);
-                        Log.d("video", "album:" + a.thumbnail);
+                        /*Log.d("video", "onres: " + a.url);
+                        Log.d("video", "thumbnail: " + a.thumbnail);
+                        Log.d("video", "folderType: " + a.folderType);
+                        Log.d("video", "name: " + a.name);
+                        Log.d("video", "mediaAlbumId: " + a.mediaAlbumId);
+                        Log.d("video", "albumsSize: " + albums.size());*/
                     }
+
+                    /*for (VideoAlbum a : albums) {
+                        a.sortVideoAlbumsByDate();
+
+                        Log.d("onvideo", "onres: " + a.url);
+                        Log.d("onvideo", "onres: " + a.coverImage);
+                        Log.d("onvideo", "onres: " + a.createdBy);
+                        Log.d("onvideo", "onres: " + a.createdByAvatar);
+                        Log.d("onvideo", "onres: " + a.folderType);
+                        Log.d("onvideo", "onres: " + a.mediaModels.size());
+                    }*/
 
                     listAdapter.notifyDataSetChanged();
                     refreshLayout.setRefreshing(false);

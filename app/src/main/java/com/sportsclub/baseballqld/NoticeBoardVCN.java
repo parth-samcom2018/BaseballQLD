@@ -284,7 +284,6 @@ public class NoticeBoardVCN extends Fragment {
 
                 final Notification n = notifications.get(position);
 
-
                 if (n.notificationTypeId == Notification.TYPE_VIDEO) {
                     convertView = LayoutInflater.from(NoticeBoardVCN.this.getContext()).inflate(R.layout.main_video_cell, parent, false);
 
@@ -327,6 +326,7 @@ public class NoticeBoardVCN extends Fragment {
 
                     Button flagButton = convertView.findViewById(R.id.flagButton);
                     flagButton.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+
 
 
                 }
@@ -496,9 +496,33 @@ public class NoticeBoardVCN extends Fragment {
                     public void onClick(View v) {
 
                         if (n.notificationTypeId == Notification.TYPE_VIDEO) {
-                            //NotificationVC.notification = n;
-                            Intent i = new Intent(NoticeBoardVCN.this.getActivity(), VideoDetailVC.class);
-                            startActivity(i);
+                            final ProgressDialog pd = DM.getPD(getActivity(), "Loading Video...");
+                            pd.show();
+                            DM.getApi().getVideoAlbum(DM.getAuthString(), n.notificationItemId, new Callback<MediaAlbum>() {
+                                @Override
+                                public void success(MediaAlbum mediaAlbum, Response response) {
+
+                                    pd.dismiss();
+                                    /*MediaDetailVC.mediaAlbum = mediaAlbum;
+                                    MediaDetailVC.selectedMediaId = n.mediaId; //can be null
+
+                                    Intent i = new Intent(NoticeBoardVCN.this.getActivity(), MediaDetailVC.class);
+                                    startActivity(i);*/
+
+                                    VideoDetailVC.mediaAlbum = mediaAlbum;
+                                    VideoDetailVC.selectedMediaId = n.mediaId;
+                                    Intent i = new Intent(getActivity(), VideoDetailVC.class);
+                                    startActivity(i);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                    pd.dismiss();
+                                    Toast.makeText(getActivity(), "Could not load media, try later", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }
 
                         if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {

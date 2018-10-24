@@ -1,9 +1,5 @@
 package com.sportsclub.baseballqld.api;
 
-import android.net.Uri;
-
-import com.sportsclub.baseballqld.VideoAlbumResponse;
-import com.sportsclub.baseballqld.models.Album;
 import com.sportsclub.baseballqld.models.Article;
 import com.sportsclub.baseballqld.models.ArticleComment;
 import com.sportsclub.baseballqld.models.ArticleResponse;
@@ -17,14 +13,12 @@ import com.sportsclub.baseballqld.models.GroupResponse;
 import com.sportsclub.baseballqld.models.LaddersResponse;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
-import com.sportsclub.baseballqld.models.MediaModelReponse;
 import com.sportsclub.baseballqld.models.Member;
 import com.sportsclub.baseballqld.models.Notification;
 import com.sportsclub.baseballqld.models.NotificationResponse;
 import com.sportsclub.baseballqld.models.Profile;
 import com.sportsclub.baseballqld.models.Register;
 import com.sportsclub.baseballqld.models.Token;
-import com.sportsclub.baseballqld.models.VideoAlbum;
 
 import java.util.List;
 
@@ -170,13 +164,6 @@ public interface API {
                                Callback<Response> callback);
 
 
-    @FormUrlEncoded
-    @POST("/apiv2/media/album")
-    public void postVideoAlbum(@Header("Authorization") String auth,
-                               @Field("name") String name,
-                               @Field("groupid") int groupID,
-                               @Field("albumtype") String type,
-                               Callback<Response> callback);
 
     @FormUrlEncoded
     @POST("/apiv2/groupmembers/invite")
@@ -240,7 +227,8 @@ public interface API {
 
 
     @GET("/apiv2/video/album/{id}")
-    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<VideoAlbum> response);
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("id") int mediaAlbumID, Callback<MediaAlbum> response);
+
 
 
     @FormUrlEncoded
@@ -261,6 +249,7 @@ public interface API {
                                   @Field("MediaId") int mediaID,
                                   @Field("Comment") String comment,
                                   Callback<Response> callback);
+
 
     //new api v2
     @FormUrlEncoded
@@ -285,12 +274,21 @@ public interface API {
                                  @Field("videourl") String url,
                                  Callback<Response> callback);
 
+
+    @FormUrlEncoded
+    @POST("/apiv2/media/album")
+    public void postVideoAlbum(@Header("Authorization") String auth,
+                               @Field("name") String name,
+                               @Field("groupid") int groupID,
+                               @Field("albumtype") String type,
+                               Callback<Response> callback);
+
     //new api v2
     @GET("/apiv2/media/get/{groupID}")
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/video/get/{groupID}")
-    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<VideoAlbumResponse> response);
+    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/video/album/{id}")
     public void getMediaModelRes(@Header("Authorization") String auth, @Path("id") int mediaAlbumID,  Callback<MediaAlbumResponse> response);
@@ -330,7 +328,7 @@ public interface API {
 
     @POST("/apiv2/account/logout")
     public void logoutUser(@Header("Authorization") String auth,
-                           Callback<Response> callback);
+                           Callback<Response> responseCallback);
 
     @DELETE("/apiv2/notifications/delete/{notificationId}")
     public void notificationDelete(@Header("Authorization") String auth,
@@ -356,4 +354,9 @@ public interface API {
                               Callback<Response> callback);
 
 
+    @FormUrlEncoded
+    @POST("/apiv2/groupmembers/creategroup")
+    public void creategroup(@Header("Authorization") String auth,
+                               @Field("groupname") String name,
+                               Callback<Response> callback);
 }

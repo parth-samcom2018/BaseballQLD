@@ -272,7 +272,8 @@ public class NoticeboardFragment extends Fragment {
 
                     final TextView tv = convertView.findViewById(R.id.secondTV);
                     tv.setText("has Added a Video");
-                    tv.setTextColor(Color.WHITE);
+                    tv.setTextColor(Color.BLACK);
+                    //tv.setTextColor(Color.WHITE);
 
 
                     //  iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -386,14 +387,7 @@ public class NoticeboardFragment extends Fragment {
                             dialog.setContentView(R.layout.my_notifications);
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-                        /*TextView tvdata = dialog.findViewById(R.id.tvData);
 
-                        tvdata.setText("" + n.comments);*/
-
-                        /*Log.d(TAG, "notification created: " + n.notificationId);
-                        Log.d(TAG, "notification id: " + n.familyId);
-                        Log.d(TAG, "NotificationitemID: " + n.notificationItemId);
-                        Log.d(TAG, "NotificationtypeID: " + n.notificationTypeId);*/
                             Log.d(TAG, "memberID: " + DM.member.memberId);
                             Log.d(TAG, "NotificationmemberID: " + n.memberId);
 
@@ -485,9 +479,33 @@ public class NoticeboardFragment extends Fragment {
                     public void onClick(View v) {
 
                         if (n.notificationTypeId == Notification.TYPE_VIDEO) {
-                            //NotificationVC.notification = n;
-                            Intent i = new Intent(NoticeboardFragment.this.getActivity(), VideoDetailVC.class);
-                            startActivity(i);
+                            final ProgressDialog pd = DM.getPD(getActivity(), "Loading Video...");
+                            pd.show();
+                            DM.getApi().getMediaAlbum(DM.getAuthString(), n.notificationItemId, new Callback<MediaAlbum>() {
+                                @Override
+                                public void success(MediaAlbum mediaAlbum, Response response) {
+
+                                    pd.dismiss();
+                                    /*MediaDetailVC.mediaAlbum = mediaAlbum;
+                                    MediaDetailVC.selectedMediaId = n.mediaId; //can be null
+
+                                    Intent i = new Intent(NoticeboardFragment.this.getActivity(), MediaDetailVC.class);
+                                    startActivity(i);*/
+
+                                    VideoDetailVC.mediaAlbum = mediaAlbum;
+                                    VideoDetailVC.selectedMediaId = n.mediaId;
+                                    Intent i = new Intent(getActivity(), VideoDetailVC.class);
+                                    startActivity(i);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                    pd.dismiss();
+                                    Toast.makeText(getActivity(), "Could not load media, try later", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }
 
                         if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {

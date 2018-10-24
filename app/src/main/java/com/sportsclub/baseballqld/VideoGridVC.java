@@ -1,7 +1,6 @@
 package com.sportsclub.baseballqld;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sportsclub.baseballqld.models.Event;
-import com.sportsclub.baseballqld.models.Group;
-import com.sportsclub.baseballqld.models.GroupResponse;
 import com.sportsclub.baseballqld.models.Media;
 import com.sportsclub.baseballqld.models.MediaAlbum;
 import com.sportsclub.baseballqld.models.MediaAlbumResponse;
@@ -37,10 +33,11 @@ import retrofit.client.Response;
 
 public class VideoGridVC extends BaseVC {
 
+    public static MediaAlbum mediaAlbum;
     //public static VideoAlbum mediaAlbum;
     public static int selectedMediaId;
     private Media selectedMedia;
-    public static VideoAlbum mediaAlbum;
+    //public static VideoAlbum mediaAlbum;
 
     Media group;
     //Media media;
@@ -172,10 +169,10 @@ public class VideoGridVC extends BaseVC {
             }
         });*/
 
-        Log.d("res","onresponse: " + mediaAlbum.mediaAlbumId);
-        Log.d("res","onresponse: " + mediaAlbum.mediaModels.size());
+        Log.d("res", "onresponse: " + mediaAlbum.mediaAlbumId);
+        Log.d("res", "onresponse: " + mediaAlbum.mediaModels.size());
 
-        DM.getApi().getMediaModelRes(auth, mediaAlbum.mediaAlbumId,  new Callback<MediaAlbumResponse>() {
+        DM.getApi().getMediaModelRes(auth, mediaAlbum.mediaAlbumId, new Callback<MediaAlbumResponse>() {
             @Override
             public void success(MediaAlbumResponse mediaModelReponse, Response response) {
 
@@ -185,7 +182,7 @@ public class VideoGridVC extends BaseVC {
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
 
-                if(mediaModelReponse.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
+                if (mediaModelReponse.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
                 else emptyIV.setVisibility(View.GONE);
 
 

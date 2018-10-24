@@ -4,8 +4,9 @@
 
     <item
         android:id="@+id/create"
-        android:title="Create"
-        app:showAsAction="ifRoom"/>
+        android:title="+ Events"
+        app:showAsAction="ifRoom"
+        />
 
 
 </menu>
